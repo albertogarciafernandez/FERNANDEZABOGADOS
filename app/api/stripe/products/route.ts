@@ -16,7 +16,7 @@ export interface LegalProduct {
   category: 'subscription' | 'one-time' | 'success-fee'
 }
 
-export const LEGAL_PRODUCTS: LegalProduct[] = [
+const LEGAL_PRODUCTS: LegalProduct[] = [
   {
     id: 'escudo-total',
     name: 'Escudo Total',

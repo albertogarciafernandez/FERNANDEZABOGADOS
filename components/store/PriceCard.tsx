@@ -55,7 +55,7 @@ export function PriceCard({ product, index = 0, highlighted = false }: PriceCard
             {product.icon}
           </div>
           {product.badge && (
-            <Badge text={product.badge.text} color={product.badge.color} size="sm" />
+            <Badge text={product.badge.text} variant={product.badge.color} size="sm" />
           )}
         </div>
         <h3 className="text-xl font-bold text-white">{product.name}</h3>
@@ -131,12 +131,11 @@ export function PriceCard({ product, index = 0, highlighted = false }: PriceCard
       {/* CTA */}
       <div className="space-y-2.5">
         <Button
-          variant={isHighlighted ? 'gold' : inCart ? 'secondary' : 'primary'}
+          variant={isHighlighted ? 'primary' : inCart ? 'secondary' : 'primary'}
           fullWidth
           size="lg"
           onClick={() => addItem(product)}
-          icon={<ArrowRight className="h-4 w-4" />}
-          iconPosition="right"
+          rightIcon={<ArrowRight className="h-4 w-4" />}
         >
           {inCart ? '✓ Añadido al carrito' : 'Contratar ahora'}
         </Button>
