@@ -1,0 +1,509 @@
+{
+  "name": "Lead Qualifier - Fernandez Abogados",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-qualifier",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "Webhook - Recibir Lead Typeform",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "f9e8d7c6-b5a4-3210-fedc-ba9876543210"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "={{$env.CLAUDE_API_KEY}}"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": []
+        },
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-opus-4-5\",\n  \"max_tokens\": 1024,\n  \"system\": \"Eres un experto cualificador de leads para un despacho de abogados. Tu tarea es analizar la información de un lead potencial y devolver una puntuación del 0 al 100 y una clasificación HOT/WARM/COLD. Criterios de evaluación:\\n- Presupuesto: alto presupuesto sube el score\\n- Urgencia: alta urgencia sube el score\\n- Empresa: si tiene empresa es más valioso\\n- Nombre y email: datos completos suben el score\\nDevuelve ÚNICAMENTE un JSON válido con este formato exacto, sin texto adicional:\\n{\\\"score\\\": <número 0-100>, \\\"clasificacion\\\": \\\"HOT|WARM|COLD\\\", \\\"razon\\\": \\\"<breve explicación>\\\"}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Cualifica este lead:\\nNombre: {{ $json.body.nombre }}\\nEmail: {{ $json.body.email }}\\nEmpresa: {{ $json.body.empresa }}\\nPresupuesto: {{ $json.body.presupuesto }}\\nUrgencia: {{ $json.body.urgencia }}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+      "name": "Claude API - Cualificar Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const responseBody = $input.first().json;\nconst contentText = responseBody.content[0].text;\n\nlet parsed;\ntry {\n  parsed = JSON.parse(contentText);\n} catch (e) {\n  const match = contentText.match(/\\{[\\s\\S]*\\}/);\n  if (match) {\n    parsed = JSON.parse(match[0]);\n  } else {\n    parsed = { score: 0, clasificacion: 'COLD', razon: 'Error al parsear respuesta' };\n  }\n}\n\nconst leadData = $('Webhook - Recibir Lead Typeform').first().json.body;\n\nreturn [{\n  json: {\n    score: parsed.score,\n    clasificacion: parsed.clasificacion,\n    razon: parsed.razon,\n    nombre: leadData.nombre,\n    email: leadData.email,\n    empresa: leadData.empresa,\n    presupuesto: leadData.presupuesto,\n    urgencia: leadData.urgencia,\n    fecha: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+      "name": "Parsear Respuesta Claude",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-hot-001",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": 70,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d4e5f6a7-b8c9-0123-defa-234567890123",
+      "name": "IF - Score HOT (>=70)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [960, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-warm-001",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": 40,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e5f6a7b8-c9d0-1234-efab-345678901234",
+      "name": "IF - Score WARM (40-69)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [960, 520]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{$env.TELEGRAM_BOT_TOKEN}}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": \"{{$env.TELEGRAM_CHAT_ID}}\",\n  \"text\": \"🔥 LEAD HOT DETECTADO 🔥\\n\\n👤 Nombre: {{ $json.nombre }}\\n📧 Email: {{ $json.email }}\\n🏢 Empresa: {{ $json.empresa }}\\n💰 Presupuesto: {{ $json.presupuesto }}\\n⚡ Urgencia: {{ $json.urgencia }}\\n\\n📊 Score: {{ $json.score }}/100\\n🏷️ Clasificación: {{ $json.clasificacion }}\\n\\n💡 Razón: {{ $json.razon }}\\n\\n📅 Fecha: {{ $json.fecha }}\",\n  \"parse_mode\": \"HTML\"\n}",
+        "options": {}
+      },
+      "id": "f6a7b8c9-d0e1-2345-fabc-456789012345",
+      "name": "Telegram - Notificar Lead HOT",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1200, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot={{$env.TELEGRAM_BOT_TOKEN}}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": \"{{$env.TELEGRAM_CHAT_ID}}\",\n  \"text\": \"🌡️ LEAD WARM\\n\\n👤 Nombre: {{ $json.nombre }}\\n📧 Email: {{ $json.email }}\\n🏢 Empresa: {{ $json.empresa }}\\n💰 Presupuesto: {{ $json.presupuesto }}\\n⚡ Urgencia: {{ $json.urgencia }}\\n\\n📊 Score: {{ $json.score }}/100\\n🏷️ Clasificación: {{ $json.clasificacion }}\\n\\n💡 Razón: {{ $json.razon }}\",\n  \"parse_mode\": \"HTML\"\n}",
+        "options": {}
+      },
+      "id": "a7b8c9d0-e1f2-3456-abcd-567890123456",
+      "name": "Telegram - Notificar Lead WARM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1200, 520]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.NOTION_TOKEN}}"
+            },
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"parent\": {\n    \"database_id\": \"{{$env.NOTION_DATABASE_ID}}\"\n  },\n  \"properties\": {\n    \"Nombre\": {\n      \"title\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.nombre }}\"\n          }\n        }\n      ]\n    },\n    \"Email\": {\n      \"email\": \"{{ $json.email }}\"\n    },\n    \"Empresa\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.empresa }}\"\n          }\n        }\n      ]\n    },\n    \"Score\": {\n      \"number\": {{ $json.score }}\n    },\n    \"Clasificación\": {\n      \"select\": {\n        \"name\": \"{{ $json.clasificacion }}\"\n      }\n    },\n    \"Presupuesto\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.presupuesto }}\"\n          }\n        }\n      ]\n    },\n    \"Urgencia\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.urgencia }}\"\n          }\n        }\n      ]\n    },\n    \"Razón IA\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.razon }}\"\n          }\n        }\n      ]\n    },\n    \"Fecha\": {\n      \"date\": {\n        \"start\": \"{{ $json.fecha }}\"\n      }\n    }\n  }\n}",
+        "options": {}
+      },
+      "id": "b8c9d0e1-f2a3-4567-bcde-678901234567",
+      "name": "Notion - Guardar Lead HOT",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1440, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.NOTION_TOKEN}}"
+            },
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"parent\": {\n    \"database_id\": \"{{$env.NOTION_DATABASE_ID}}\"\n  },\n  \"properties\": {\n    \"Nombre\": {\n      \"title\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.nombre }}\"\n          }\n        }\n      ]\n    },\n    \"Email\": {\n      \"email\": \"{{ $json.email }}\"\n    },\n    \"Empresa\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.empresa }}\"\n          }\n        }\n      ]\n    },\n    \"Score\": {\n      \"number\": {{ $json.score }}\n    },\n    \"Clasificación\": {\n      \"select\": {\n        \"name\": \"{{ $json.clasificacion }}\"\n      }\n    },\n    \"Presupuesto\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.presupuesto }}\"\n          }\n        }\n      ]\n    },\n    \"Urgencia\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.urgencia }}\"\n          }\n        }\n      ]\n    },\n    \"Razón IA\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.razon }}\"\n          }\n        }\n      ]\n    },\n    \"Fecha\": {\n      \"date\": {\n        \"start\": \"{{ $json.fecha }}\"\n      }\n    }\n  }\n}",
+        "options": {}
+      },
+      "id": "c9d0e1f2-a3b4-5678-cdef-789012345678",
+      "name": "Notion - Guardar Lead WARM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1440, 520]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.NOTION_TOKEN}}"
+            },
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"parent\": {\n    \"database_id\": \"{{$env.NOTION_DATABASE_ID}}\"\n  },\n  \"properties\": {\n    \"Nombre\": {\n      \"title\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.nombre }}\"\n          }\n        }\n      ]\n    },\n    \"Email\": {\n      \"email\": \"{{ $json.email }}\"\n    },\n    \"Empresa\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.empresa }}\"\n          }\n        }\n      ]\n    },\n    \"Score\": {\n      \"number\": {{ $json.score }}\n    },\n    \"Clasificación\": {\n      \"select\": {\n        \"name\": \"{{ $json.clasificacion }}\"\n      }\n    },\n    \"Presupuesto\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.presupuesto }}\"\n          }\n        }\n      ]\n    },\n    \"Urgencia\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.urgencia }}\"\n          }\n        }\n      ]\n    },\n    \"Razón IA\": {\n      \"rich_text\": [\n        {\n          \"text\": {\n            \"content\": \"{{ $json.razon }}\"\n          }\n        }\n      ]\n    },\n    \"Fecha\": {\n      \"date\": {\n        \"start\": \"{{ $json.fecha }}\"\n      }\n    }\n  }\n}",
+        "options": {}
+      },
+      "id": "d0e1f2a3-b4c5-6789-defa-890123456789",
+      "name": "Notion - Guardar Lead COLD",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1440, 740]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{$env.SMTP_FROM_EMAIL}}",
+        "toEmail": "={{ $json.email }}",
+        "subject": "Hemos recibido tu consulta - Fernández Abogados",
+        "emailType": "html",
+        "message": "=<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Bienvenido - Fernández Abogados</title>\n  <style>\n    body { font-family: 'Georgia', serif; color: #2c2c2c; background-color: #f9f7f4; margin: 0; padding: 0; }\n    .container { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }\n    .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px 30px; text-align: center; }\n    .header h1 { color: #c9a84c; font-size: 24px; margin: 0; letter-spacing: 2px; text-transform: uppercase; }\n    .header p { color: #e0d5c5; font-size: 13px; margin: 8px 0 0; letter-spacing: 1px; }\n    .body { padding: 40px 30px; }\n    .greeting { font-size: 20px; color: #1a1a2e; margin-bottom: 20px; }\n    .text { font-size: 15px; line-height: 1.7; color: #4a4a4a; margin-bottom: 16px; }\n    .highlight-box { background: #f5f0e8; border-left: 4px solid #c9a84c; padding: 20px 24px; border-radius: 0 6px 6px 0; margin: 24px 0; }\n    .highlight-box p { margin: 0; font-size: 15px; color: #2c2c2c; line-height: 1.6; }\n    .cta-button { display: inline-block; background: #c9a84c; color: #1a1a2e; text-decoration: none; padding: 14px 32px; border-radius: 4px; font-weight: bold; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; margin: 20px 0; }\n    .footer { background: #1a1a2e; padding: 24px 30px; text-align: center; }\n    .footer p { color: #8a8a9a; font-size: 12px; margin: 4px 0; }\n    .footer a { color: #c9a84c; text-decoration: none; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>Fernández Abogados</h1>\n      <p>Asesoría Legal de Confianza</p>\n    </div>\n    <div class=\"body\">\n      <p class=\"greeting\">Estimado/a {{ $json.nombre }},</p>\n      <p class=\"text\">Gracias por ponerse en contacto con nosotros. Hemos recibido correctamente su consulta y nos complace confirmarle que un miembro de nuestro equipo de abogados especializados se pondrá en contacto con usted a la mayor brevedad posible.</p>\n      <div class=\"highlight-box\">\n        <p>En <strong>Fernández Abogados</strong> entendemos que cada caso es único y requiere una atención personalizada. Nuestro compromiso es ofrecerle asesoramiento legal de la más alta calidad, con total transparencia y dedicación a sus intereses.</p>\n      </div>\n      <p class=\"text\">Mientras tanto, le invitamos a conocer más sobre nuestros servicios y los casos de éxito de nuestros clientes en nuestra web.</p>\n      <p class=\"text\">Si tiene alguna pregunta urgente, no dude en llamarnos directamente.</p>\n      <div style=\"text-align: center; margin: 30px 0;\">\n        <a href=\"https://fernandezabogados.es\" class=\"cta-button\">Visitar nuestra web</a>\n      </div>\n      <p class=\"text\">Atentamente,</p>\n      <p class=\"text\"><strong>El equipo de Fernández Abogados</strong></p>\n    </div>\n    <div class=\"footer\">\n      <p>Fernández Abogados | Madrid, España</p>\n      <p><a href=\"tel:+34900000000\">+34 900 000 000</a> | <a href=\"mailto:info@fernandezabogados.es\">info@fernandezabogados.es</a></p>\n      <p style=\"margin-top: 12px; color: #5a5a6a;\">Este email ha sido enviado a {{ $json.email }} porque se registró en nuestro formulario de contacto.</p>\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "e1f2a3b4-c5d6-7890-efab-901234567890",
+      "name": "Email - Bienvenida HOT",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1680, 180],
+      "credentials": {
+        "smtp": {
+          "id": "smtp-cred-001",
+          "name": "SMTP Fernandez Abogados"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{$env.SMTP_FROM_EMAIL}}",
+        "toEmail": "={{ $json.email }}",
+        "subject": "Hemos recibido tu consulta - Fernández Abogados",
+        "emailType": "html",
+        "message": "=<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Bienvenido - Fernández Abogados</title>\n  <style>\n    body { font-family: 'Georgia', serif; color: #2c2c2c; background-color: #f9f7f4; margin: 0; padding: 0; }\n    .container { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }\n    .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px 30px; text-align: center; }\n    .header h1 { color: #c9a84c; font-size: 24px; margin: 0; letter-spacing: 2px; text-transform: uppercase; }\n    .header p { color: #e0d5c5; font-size: 13px; margin: 8px 0 0; letter-spacing: 1px; }\n    .body { padding: 40px 30px; }\n    .greeting { font-size: 20px; color: #1a1a2e; margin-bottom: 20px; }\n    .text { font-size: 15px; line-height: 1.7; color: #4a4a4a; margin-bottom: 16px; }\n    .highlight-box { background: #f5f0e8; border-left: 4px solid #c9a84c; padding: 20px 24px; border-radius: 0 6px 6px 0; margin: 24px 0; }\n    .highlight-box p { margin: 0; font-size: 15px; color: #2c2c2c; line-height: 1.6; }\n    .cta-button { display: inline-block; background: #c9a84c; color: #1a1a2e; text-decoration: none; padding: 14px 32px; border-radius: 4px; font-weight: bold; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; margin: 20px 0; }\n    .footer { background: #1a1a2e; padding: 24px 30px; text-align: center; }\n    .footer p { color: #8a8a9a; font-size: 12px; margin: 4px 0; }\n    .footer a { color: #c9a84c; text-decoration: none; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>Fernández Abogados</h1>\n      <p>Asesoría Legal de Confianza</p>\n    </div>\n    <div class=\"body\">\n      <p class=\"greeting\">Estimado/a {{ $json.nombre }},</p>\n      <p class=\"text\">Gracias por ponerse en contacto con nosotros. Hemos recibido correctamente su consulta y nos complace informarle que un miembro de nuestro equipo le contactará en los próximos días para estudiar su caso en detalle.</p>\n      <div class=\"highlight-box\">\n        <p>En <strong>Fernández Abogados</strong> analizamos cada consulta con la misma atención y profesionalidad, independientemente de su envergadura. Su situación es importante para nosotros y merece la mejor asesoría legal.</p>\n      </div>\n      <p class=\"text\">Le animamos a preparar cualquier documentación relevante relacionada con su consulta para que podamos ofrecerle el asesoramiento más preciso posible.</p>\n      <div style=\"text-align: center; margin: 30px 0;\">\n        <a href=\"https://fernandezabogados.es\" class=\"cta-button\">Conocer nuestros servicios</a>\n      </div>\n      <p class=\"text\">Atentamente,</p>\n      <p class=\"text\"><strong>El equipo de Fernández Abogados</strong></p>\n    </div>\n    <div class=\"footer\">\n      <p>Fernández Abogados | Madrid, España</p>\n      <p><a href=\"tel:+34900000000\">+34 900 000 000</a> | <a href=\"mailto:info@fernandezabogados.es\">info@fernandezabogados.es</a></p>\n      <p style=\"margin-top: 12px; color: #5a5a6a;\">Este email ha sido enviado a {{ $json.email }} porque se registró en nuestro formulario de contacto.</p>\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "f2a3b4c5-d6e7-8901-fabc-012345678901",
+      "name": "Email - Bienvenida WARM",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1680, 520],
+      "credentials": {
+        "smtp": {
+          "id": "smtp-cred-001",
+          "name": "SMTP Fernandez Abogados"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{$env.SMTP_FROM_EMAIL}}",
+        "toEmail": "={{ $json.email }}",
+        "subject": "Hemos recibido tu consulta - Fernández Abogados",
+        "emailType": "html",
+        "message": "=<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Bienvenido - Fernández Abogados</title>\n  <style>\n    body { font-family: 'Georgia', serif; color: #2c2c2c; background-color: #f9f7f4; margin: 0; padding: 0; }\n    .container { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }\n    .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px 30px; text-align: center; }\n    .header h1 { color: #c9a84c; font-size: 24px; margin: 0; letter-spacing: 2px; text-transform: uppercase; }\n    .header p { color: #e0d5c5; font-size: 13px; margin: 8px 0 0; letter-spacing: 1px; }\n    .body { padding: 40px 30px; }\n    .greeting { font-size: 20px; color: #1a1a2e; margin-bottom: 20px; }\n    .text { font-size: 15px; line-height: 1.7; color: #4a4a4a; margin-bottom: 16px; }\n    .highlight-box { background: #f5f0e8; border-left: 4px solid #c9a84c; padding: 20px 24px; border-radius: 0 6px 6px 0; margin: 24px 0; }\n    .highlight-box p { margin: 0; font-size: 15px; color: #2c2c2c; line-height: 1.6; }\n    .cta-button { display: inline-block; background: #c9a84c; color: #1a1a2e; text-decoration: none; padding: 14px 32px; border-radius: 4px; font-weight: bold; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; margin: 20px 0; }\n    .footer { background: #1a1a2e; padding: 24px 30px; text-align: center; }\n    .footer p { color: #8a8a9a; font-size: 12px; margin: 4px 0; }\n    .footer a { color: #c9a84c; text-decoration: none; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>Fernández Abogados</h1>\n      <p>Asesoría Legal de Confianza</p>\n    </div>\n    <div class=\"body\">\n      <p class=\"greeting\">Estimado/a {{ $json.nombre }},</p>\n      <p class=\"text\">Gracias por ponerse en contacto con Fernández Abogados. Hemos recibido su consulta y queremos que sepa que valoramos su interés en nuestros servicios.</p>\n      <div class=\"highlight-box\">\n        <p>Nuestro equipo revisará su consulta y, si considera que podemos ayudarle, nos pondremos en contacto con usted. Mientras tanto, le invitamos a explorar nuestros recursos gratuitos y artículos de orientación legal en nuestra web.</p>\n      </div>\n      <p class=\"text\">En <strong>Fernández Abogados</strong> creemos en la información como herramienta de empoderamiento ciudadano. Consulte nuestro blog para obtener orientación sobre las cuestiones legales más frecuentes.</p>\n      <div style=\"text-align: center; margin: 30px 0;\">\n        <a href=\"https://fernandezabogados.es/blog\" class=\"cta-button\">Ver recursos gratuitos</a>\n      </div>\n      <p class=\"text\">Atentamente,</p>\n      <p class=\"text\"><strong>El equipo de Fernández Abogados</strong></p>\n    </div>\n    <div class=\"footer\">\n      <p>Fernández Abogados | Madrid, España</p>\n      <p><a href=\"tel:+34900000000\">+34 900 000 000</a> | <a href=\"mailto:info@fernandezabogados.es\">info@fernandezabogados.es</a></p>\n      <p style=\"margin-top: 12px; color: #5a5a6a;\">Este email ha sido enviado a {{ $json.email }} porque se registró en nuestro formulario de contacto.</p>\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "a3b4c5d6-e7f8-9012-abcd-123456789012",
+      "name": "Email - Bienvenida COLD",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1680, 740],
+      "credentials": {
+        "smtp": {
+          "id": "smtp-cred-001",
+          "name": "SMTP Fernandez Abogados"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'ok', message: 'Lead procesado correctamente', score: $('Parsear Respuesta Claude').first().json.score, clasificacion: $('Parsear Respuesta Claude').first().json.clasificacion }) }}",
+        "options": {}
+      },
+      "id": "b4c5d6e7-f8a9-0123-bcde-234567890123",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1920, 300]
+    }
+  ],
+  "connections": {
+    "Webhook - Recibir Lead Typeform": {
+      "main": [
+        [
+          {
+            "node": "Claude API - Cualificar Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude API - Cualificar Lead": {
+      "main": [
+        [
+          {
+            "node": "Parsear Respuesta Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear Respuesta Claude": {
+      "main": [
+        [
+          {
+            "node": "IF - Score HOT (>=70)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - Score HOT (>=70)": {
+      "main": [
+        [
+          {
+            "node": "Telegram - Notificar Lead HOT",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF - Score WARM (40-69)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF - Score WARM (40-69)": {
+      "main": [
+        [
+          {
+            "node": "Telegram - Notificar Lead WARM",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notion - Guardar Lead COLD",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram - Notificar Lead HOT": {
+      "main": [
+        [
+          {
+            "node": "Notion - Guardar Lead HOT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram - Notificar Lead WARM": {
+      "main": [
+        [
+          {
+            "node": "Notion - Guardar Lead WARM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion - Guardar Lead HOT": {
+      "main": [
+        [
+          {
+            "node": "Email - Bienvenida HOT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion - Guardar Lead WARM": {
+      "main": [
+        [
+          {
+            "node": "Email - Bienvenida WARM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion - Guardar Lead COLD": {
+      "main": [
+        [
+          {
+            "node": "Email - Bienvenida COLD",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email - Bienvenida HOT": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email - Bienvenida WARM": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email - Bienvenida COLD": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2026-05-22T00:00:00.000Z",
+      "updatedAt": "2026-05-22T00:00:00.000Z",
+      "id": "tag-lead-qualifier-001",
+      "name": "leads"
+    },
+    {
+      "createdAt": "2026-05-22T00:00:00.000Z",
+      "updatedAt": "2026-05-22T00:00:00.000Z",
+      "id": "tag-lead-qualifier-002",
+      "name": "automatizacion"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-05-22T00:00:00.000Z",
+  "versionId": "1a2b3c4d-5e6f-7890-abcd-ef1234567890"
+}
