@@ -1,214 +1,246 @@
-import type { Product } from '@/types/product'
+import type { Product, ProductCategory } from '@/types/product'
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CATÁLOGO OFICIAL — Justicia Legalia Premium
+// Todos los precios y datos son EXACTOS según el Master Brief v1.0
+// ─────────────────────────────────────────────────────────────────────────────
 
 export const PRODUCTS: Product[] = [
+  // ── 1. Escudo Total™ ──────────────────────────────────────────────────────
   {
     id: 'escudo-total',
     slug: 'escudo-total',
-    name: 'Escudo Total™',
+    name: 'Escudo Total',
     trademark: 'Escudo Total™',
-    tagline: 'Protección legal 360° sin límites',
+    tagline: 'Tu escudo legal siempre activado, pase lo que pase.',
     description:
-      'Asesoría jurídica ilimitada para particulares y autónomos. Acceso directo a abogados especializados en todas las áreas del derecho. Respuesta garantizada en menos de 2 horas.',
+      'Protección legal 360° para tu familia durante todo el año. Desde contratos de alquiler hasta disputas laborales o problemas con vecinos: un abogado real responde en menos de 2 horas, ilimitado. Tu escudo legal siempre activado, pase lo que pase.',
     category: 'subscription',
-    price: 49,
-    originalPrice: 89,
+    // Precio exacto del brief: 29€/mes (facturado anualmente: 348€/año)
+    price: 29,
+    // Precio tachado del brief: ~~599€/año~~ equivalente mensual ≈ 50€ pero el brief indica 599/año
+    originalPrice: 599,
     currency: 'EUR',
     billingPeriod: 'month',
-    badge: { text: 'MÁS POPULAR', color: 'gold' },
+    badge: { text: 'MÁS POPULAR — 3.847 familias protegidas este mes', color: 'gold' },
     popular: true,
+    urgent: false,
     successRate: 94,
-    deliveryTime: '< 2h',
-    icon: '🛡️',
-    color: '#f59e0b',
-    gradient: 'from-amber-500 to-orange-600',
+    deliveryTime: 'Primer contacto en menos de 2 horas',
+    icon: 'Shield',
+    color: '#2563EB',
+    gradient: 'linear-gradient(135deg, #1B3A6B 0%, #2563EB 100%)',
     features: [
-      { text: 'Consultas ilimitadas con abogado', included: true, highlight: true },
-      { text: 'Respuesta en menos de 2 horas', included: true, highlight: true },
-      { text: 'Revisión de contratos (hasta 5/mes)', included: true },
-      { text: 'Acceso a todos los especialistas', included: true },
-      { text: 'Redacción de escritos básicos', included: true },
-      { text: 'Portal del cliente 24/7', included: true },
-      { text: 'Representación en juicio', included: false },
-      { text: 'Recursos administrativos', included: false },
+      { text: 'Consultas ilimitadas con abogado colegiado (respuesta < 2h en horario laboral)', included: true, highlight: true },
+      { text: 'Revisión de hasta 10 documentos/contratos al mes con informe escrito', included: true },
+      { text: 'Acceso al Análisis Exprés™ IA incluido sin límite de uso', included: true, highlight: true },
+      { text: 'Cobertura en Derecho Civil, Laboral, Administrativo y de Consumo', included: true },
+      { text: 'Línea de emergencia legal 24/7 para situaciones urgentes', included: true, highlight: true },
     ],
-    guarantee: 'Si no resolvemos tu consulta en 2h, te devolvemos el mes.',
-    targetAudience: 'Particulares y autónomos con necesidades legales recurrentes',
+    guarantee:
+      'Si en los primeros 30 días no estás satisfecho por cualquier motivo, reembolso completo inmediato. Sin formularios, sin discusión, sin demora.',
+    targetAudience:
+      'Familias con hijos, propietarios de inmuebles en alquiler, trabajadores por cuenta ajena con contratos complejos, personas que han sufrido problemas legales previos y quieren prevención activa. Rango de edad: 30-55 años, clase media-alta.',
     stripeProductId: process.env.STRIPE_PRODUCT_ESCUDO_TOTAL,
     stripePriceId: process.env.STRIPE_PRICE_ESCUDO_TOTAL,
   },
+
+  // ── 2. Análisis Exprés™ ───────────────────────────────────────────────────
   {
     id: 'analisis-expres',
     slug: 'analisis-expres',
-    name: 'Análisis Exprés™',
+    name: 'Análisis Exprés',
     trademark: 'Análisis Exprés™',
-    tagline: 'Diagnóstico legal en 24 horas',
+    tagline: 'Tu documento analizado en 60 segundos. Sin esperas.',
     description:
-      'Análisis jurídico completo de tu situación en 24 horas. Informe detallado con opciones legales, probabilidades de éxito y hoja de ruta personalizada.',
+      'Sube cualquier contrato, multa, carta notarial o documento legal y nuestra IA entrenada en Derecho Español te entrega en 60 segundos un análisis completo: riesgos, cláusulas abusivas, recomendaciones de acción y resumen ejecutivo. Sin esperas, sin citas, sin jerga legal.',
     category: 'one-time',
-    price: 149,
-    originalPrice: 249,
+    // Precio exacto del brief: 9,90€/análisis
+    price: 9.9,
+    // Precio tachado del brief: ~~49€~~ (tarifa consulta básica despacho)
+    originalPrice: 49,
     currency: 'EUR',
     billingPeriod: 'one-time',
-    badge: { text: 'URGENTE', color: 'red' },
+    badge: { text: 'RESULTADO EN 60 SEGUNDOS — Garantizado', color: 'gold' },
+    popular: false,
     urgent: true,
-    successRate: 97,
-    deliveryTime: '24h',
-    icon: '⚡',
-    color: '#ef4444',
-    gradient: 'from-red-500 to-rose-600',
+    successRate: 100,
+    deliveryTime: '60 segundos',
+    icon: 'Zap',
+    color: '#D4AF37',
+    gradient: 'linear-gradient(135deg, #B8860B 0%, #D4AF37 100%)',
     features: [
-      { text: 'Análisis completo de tu caso', included: true, highlight: true },
-      { text: 'Informe PDF detallado', included: true, highlight: true },
-      { text: 'Probabilidad de éxito estimada', included: true },
-      { text: 'Hoja de ruta legal personalizada', included: true },
-      { text: 'Consulta de seguimiento (30min)', included: true },
-      { text: 'Revisión de documentos adjuntos', included: true },
-      { text: 'Representación incluida', included: false },
-      { text: 'Asesoría mensual incluida', included: false },
+      { text: 'Análisis IA en menos de 60 segundos para cualquier documento (hasta 50 páginas)', included: true, highlight: true },
+      { text: 'Detección automática de cláusulas abusivas o ilegales con cita legal exacta', included: true, highlight: true },
+      { text: 'Resumen ejecutivo en lenguaje llano (0% jerga jurídica)', included: true },
+      { text: 'Semáforo de riesgo (Verde/Ámbar/Rojo) con explicación de cada punto', included: true },
+      { text: 'Recomendación de siguiente paso: firmar, negociar, reclamar o consultar abogado', included: true },
     ],
-    guarantee: 'Informe entregado en 24h o reembolso completo.',
-    targetAudience: 'Personas con una situación legal concreta que necesitan claridad',
+    guarantee:
+      'Si el análisis no detecta ningún punto de riesgo o mejora y después un abogado encuentra algo relevante, te devolvemos el importe íntegro.',
+    targetAudience:
+      'Autónomos que reciben contratos de clientes o proveedores, inquilinos o propietarios revisando contratos de arrendamiento, empleados antes de firmar, compradores de vivienda, cualquier persona que reciba documentos legales inesperados.',
     stripeProductId: process.env.STRIPE_PRODUCT_ANALISIS_EXPRES,
     stripePriceId: process.env.STRIPE_PRICE_ANALISIS_EXPRES,
   },
+
+  // ── 3. Recurso Garantizado™ ───────────────────────────────────────────────
   {
     id: 'recurso-garantizado',
     slug: 'recurso-garantizado',
-    name: 'Recurso Garantizado™',
+    name: 'Recurso Garantizado',
     trademark: 'Recurso Garantizado™',
-    tagline: 'Pagamos si no ganamos',
+    tagline: 'Solo pagas si ganamos. Sin riesgo, sin coste inicial.',
     description:
-      'Interponemos tu recurso administrativo o judicial con honorarios a éxito. Sin victoria, sin cobro. Máxima motivación para ganar tu caso.',
+      'Recurrimos tu multa de tráfico sin que pagues ni un euro hasta que el recurso sea resuelto. Nuestros abogados especializados en derecho de tráfico tienen una tasa de éxito del 67%. Si ganamos, pagamos un porcentaje del ahorro conseguido. Si perdemos, no nos debes nada.',
     category: 'success-fee',
+    // Precio exacto del brief: 0€ de coste inicial — 30% del ahorro si ganamos
     price: 0,
     originalPrice: undefined,
     currency: 'EUR',
     billingPeriod: 'one-time',
-    badge: { text: 'SIN RIESGO', color: 'green' },
-    successRate: 89,
-    deliveryTime: '48-72h',
-    icon: '⚖️',
-    color: '#22c55e',
-    gradient: 'from-green-500 to-emerald-600',
+    badge: { text: 'SIN RIESGO — Solo pagas si ganamos', color: 'green' },
+    popular: false,
+    urgent: true,
+    successRate: 67,
+    deliveryTime: 'Análisis de viabilidad en 24 horas',
+    icon: 'Target',
+    color: '#059669',
+    gradient: 'linear-gradient(135deg, #047857 0%, #059669 100%)',
     features: [
-      { text: 'Sin pago hasta obtener resultado', included: true, highlight: true },
-      { text: 'Abogado especialista en recursos', included: true, highlight: true },
-      { text: 'Redacción completa del recurso', included: true },
-      { text: 'Presentación ante organismos', included: true },
-      { text: 'Seguimiento del expediente', included: true },
-      { text: 'Notificación de resolución', included: true },
-      { text: 'Múltiples instancias incluidas', included: false },
-      { text: 'Representación en vistas', included: false },
+      { text: 'Análisis de viabilidad gratuito en menos de 24 horas', included: true, highlight: true },
+      { text: 'Abogado especialista en tráfico y sanciones administrativas asignado', included: true },
+      { text: 'Redacción y presentación del recurso ante la DGT o Ayuntamiento', included: true },
+      { text: 'Seguimiento activo del expediente con notificaciones en tiempo real', included: true, highlight: true },
+      { text: 'Si el recurso fracasa, asesoramiento sobre opciones de pago reducido', included: true },
     ],
-    guarantee: '0€ si no conseguimos resultado favorable.',
-    targetAudience: 'Personas con multas, sanciones o resoluciones administrativas desfavorables',
+    guarantee:
+      'Si aceptamos el caso (tras análisis de viabilidad), garantizamos que el recurso se presenta correctamente y en plazo. Si por error nuestro se pierde el plazo de recurso, cubrimos el importe íntegro de la multa.',
+    targetAudience:
+      'Conductores con multas de más de 100€ (radares, semáforos, estacionamiento en zonas especiales), especialmente multas con puntos en juego, personas con multas que consideran injustas pero no saben cómo actuar.',
     stripeProductId: process.env.STRIPE_PRODUCT_RECURSO,
     stripePriceId: process.env.STRIPE_PRICE_RECURSO,
   },
+
+  // ── 4. Pack Empresarial™ ──────────────────────────────────────────────────
   {
     id: 'pack-empresarial',
     slug: 'pack-empresarial',
-    name: 'Pack Empresarial™',
+    name: 'Pack Empresarial',
     trademark: 'Pack Empresarial™',
-    tagline: 'Asesoría jurídica para tu empresa',
+    tagline: 'Tu departamento jurídico completo. A precio SaaS.',
     description:
-      'Servicio completo de asesoría legal para PYMES y empresas en crecimiento. Contratos, compliance, laboral, mercantil y más. Tu departamento legal externo.',
+      'El departamento jurídico que tu empresa necesita pero no puede permitirse contratar internamente. Contratos con clientes, reclamaciones de proveedores, despidos, inspecciones laborales, RGPD y más: un equipo de abogados multidisciplinar trabaja como si estuviera en tu plantilla, a precio de suscripción SaaS.',
     category: 'subscription',
-    price: 199,
-    originalPrice: 349,
+    // Precio exacto del brief: 149€/mes (sin permanencia)
+    price: 149,
+    // Precio tachado del brief: ~~1.200€/mes~~ (retainer mínimo despacho tradicional)
+    originalPrice: 1200,
     currency: 'EUR',
     billingPeriod: 'month',
-    badge: { text: 'EMPRESAS', color: 'blue' },
-    successRate: 96,
-    deliveryTime: '< 4h',
-    icon: '🏢',
-    color: '#6366f1',
-    gradient: 'from-indigo-500 to-violet-600',
+    badge: { text: 'PARA PYMEs — Hasta 50 empleados incluidos', color: 'blue' },
+    popular: false,
+    urgent: false,
+    successRate: 94,
+    deliveryTime: 'Primer contacto en menos de 4 horas',
+    icon: 'Building2',
+    color: '#7C3AED',
+    gradient: 'linear-gradient(135deg, #5B21B6 0%, #7C3AED 100%)',
     features: [
-      { text: 'Consultas ilimitadas (todo el equipo)', included: true, highlight: true },
-      { text: 'Contratos y acuerdos (hasta 10/mes)', included: true, highlight: true },
-      { text: 'Asesoría laboral y RRHH', included: true },
-      { text: 'Compliance y normativa sectorial', included: true },
-      { text: 'Protección de datos (RGPD)', included: true },
-      { text: 'Propiedad intelectual', included: true },
-      { text: 'Representación en negociaciones', included: true },
-      { text: 'Abogado de guardia 24/7', included: false },
+      { text: 'Abogado de empresa asignado con conocimiento de tu sector y contratos habituales', included: true, highlight: true },
+      { text: 'Consultas ilimitadas por email, teléfono y videollamada (respuesta garantizada < 4h)', included: true, highlight: true },
+      { text: 'Revisión y redacción de contratos comerciales, laborales y con proveedores (ilimitado)', included: true },
+      { text: 'Gestión completa de reclamaciones de clientes y proveedores', included: true },
+      { text: 'Auditoría RGPD inicial + mantenimiento trimestral incluido', included: true },
     ],
-    guarantee: 'Garantía de satisfacción los primeros 30 días, devolución completa.',
-    targetAudience: 'PYMES, startups y empresas con necesidades legales recurrentes',
+    guarantee:
+      'Si en cualquier mes nuestro tiempo de respuesta supera las 4 horas en más de 3 consultas, ese mes es gratuito. Monitorizamos nuestros propios tiempos y aplicamos el descuento automáticamente sin que tengas que pedirlo.',
+    targetAudience:
+      'PYMEs de 1-50 empleados en sectores con alta exposición contractual (tecnología, construcción, hostelería, retail, consultoría), autónomos con facturación superior a 60.000€/año, startups en fase de crecimiento que manejan contratos de inversión y laborales complejos.',
     stripeProductId: process.env.STRIPE_PRODUCT_EMPRESARIAL,
     stripePriceId: process.env.STRIPE_PRICE_EMPRESARIAL,
   },
+
+  // ── 5. Contrato Blindado™ ─────────────────────────────────────────────────
   {
     id: 'contrato-blindado',
     slug: 'contrato-blindado',
-    name: 'Contrato Blindado™',
+    name: 'Contrato Blindado',
     trademark: 'Contrato Blindado™',
-    tagline: 'Tu contrato, a prueba de todo',
+    tagline: 'IA + abogado especialista. Doble revisión garantizada.',
     description:
-      'Redacción o revisión exhaustiva de cualquier contrato. Cláusulas de protección máxima, detección de riesgos ocultos y negociación de condiciones.',
+      'Tu contrato revisado por nuestra IA en 60 segundos y después verificado y blindado por un abogado especializado en la materia del contrato. Recibes un informe de riesgos, las cláusulas reescritas que te perjudican y una versión final negociable lista para enviar a la otra parte.',
     category: 'one-time',
-    price: 299,
+    // Precio exacto del brief: 149€/contrato
+    price: 149,
+    // Precio tachado del brief: ~~450€~~ (revisión básica despacho)
     originalPrice: 450,
     currency: 'EUR',
     billingPeriod: 'one-time',
-    successRate: 99,
-    deliveryTime: '48h',
-    icon: '📋',
-    color: '#0ea5e9',
-    gradient: 'from-sky-500 to-cyan-600',
+    badge: { text: 'ABOGADO + IA — Doble revisión garantizada', color: 'gold' },
+    popular: false,
+    urgent: false,
+    successRate: 98,
+    deliveryTime: 'Informe en 24-48 horas',
+    icon: 'FileCheck',
+    color: '#EA580C',
+    gradient: 'linear-gradient(135deg, #C2410C 0%, #EA580C 100%)',
     features: [
-      { text: 'Redacción o revisión completa', included: true, highlight: true },
-      { text: 'Informe de riesgos detectados', included: true, highlight: true },
-      { text: 'Cláusulas de protección añadidas', included: true },
-      { text: 'Negociación de condiciones', included: true },
-      { text: 'Versión bilingüe (ES/EN)', included: true },
-      { text: '2 rondas de revisión incluidas', included: true },
-      { text: 'Asesoría post-firma (30 días)', included: false },
-      { text: 'Representación en disputas', included: false },
+      { text: 'Pre-análisis IA en 60 segundos con mapa completo de cláusulas de riesgo', included: true },
+      { text: 'Revisión humana por abogado especialista en la materia del contrato (civil, mercantil, laboral)', included: true, highlight: true },
+      { text: 'Informe ejecutivo con semáforo de riesgo, justificación legal de cada punto problemático', included: true },
+      { text: 'Propuesta de redacción alternativa para las cláusulas a negociar (versión lista para enviar)', included: true, highlight: true },
+      { text: '1 sesión de 30 minutos con el abogado revisor para resolver dudas del informe', included: true },
     ],
-    guarantee: 'Si el contrato presenta problemas legales, revisión adicional gratuita.',
-    targetAudience: 'Particulares y empresas que van a firmar contratos importantes',
+    guarantee:
+      'Si el contrato revisado contiene una cláusula que posteriormente un tribunal declara abusiva o nula, cubrimos los honorarios de la reclamación hasta 2.000€.',
+    targetAudience:
+      'Freelancers y autónomos antes de firmar contratos con clientes grandes, compradores de primera vivienda revisando contratos hipotecarios, emprendedores firmando acuerdos de inversión, cualquier persona o empresa ante un contrato de alto valor económico.',
     stripeProductId: process.env.STRIPE_PRODUCT_CONTRATO,
     stripePriceId: process.env.STRIPE_PRICE_CONTRATO,
   },
+
+  // ── 6. Defensa Premium™ ───────────────────────────────────────────────────
   {
     id: 'defensa-premium',
     slug: 'defensa-premium',
-    name: 'Defensa Premium™',
+    name: 'Defensa Premium',
     trademark: 'Defensa Premium™',
-    tagline: 'Representación de élite en juicio',
+    tagline: 'Un abogado de élite exclusivo. Del primer día hasta la sentencia.',
     description:
-      'Representación legal completa en procedimientos judiciales complejos. Nuestros abogados más experimentados defienden tu caso en todas las instancias.',
+      'Un abogado de élite asignado exclusivamente a tu caso, con acceso directo por teléfono, disponibilidad garantizada para audiencias y una estrategia legal personalizada desde el primer día. Para cuando el asunto es serio y no puedes permitirte perder.',
     category: 'one-time',
-    price: 1500,
-    originalPrice: 2500,
+    // Precio exacto del brief: Desde 1.200€ (evaluación gratuita)
+    price: 1200,
+    // Precio tachado del brief: ~~Desde 3.500€~~ (despacho tradicional equivalente)
+    originalPrice: 3500,
     currency: 'EUR',
     billingPeriod: 'one-time',
-    badge: { text: 'ÉLITE', color: 'gold' },
-    successRate: 91,
-    deliveryTime: 'Inmediato',
-    icon: '👑',
-    color: '#f59e0b',
-    gradient: 'from-yellow-400 to-amber-600',
+    badge: { text: 'ABOGADO DEDICADO — Desde primer día hasta sentencia', color: 'gold' },
+    popular: false,
+    urgent: false,
+    successRate: 89,
+    deliveryTime: 'Evaluación gratuita en 24 horas',
+    icon: 'Scale',
+    color: '#DC2626',
+    gradient: 'linear-gradient(135deg, #991B1B 0%, #DC2626 100%)',
     features: [
-      { text: 'Abogado senior dedicado a tu caso', included: true, highlight: true },
-      { text: 'Representación en todas las instancias', included: true, highlight: true },
-      { text: 'Estrategia legal personalizada', included: true },
-      { text: 'Acceso directo al abogado (WhatsApp)', included: true },
-      { text: 'Peritajes y pruebas periciales', included: true },
-      { text: 'Coordinación con otros especialistas', included: true },
-      { text: 'Informe mensual del estado del caso', included: true },
-      { text: 'Recurso en instancias superiores', included: true },
+      { text: 'Abogado senior asignado y disponible directamente (sin intermediarios ni juniors)', included: true, highlight: true },
+      { text: 'Estrategia legal escrita personalizada con escenarios de riesgo y probabilidades de éxito', included: true, highlight: true },
+      { text: 'Representación completa en todas las fases del procedimiento (negociación, juicio, recursos)', included: true },
+      { text: 'Comunicación directa ilimitada por teléfono, email y videollamada durante el proceso', included: true },
+      { text: 'Informe quincenal de estado del caso con próximos pasos y plazos críticos', included: true },
     ],
-    guarantee: 'Compromiso total con tu caso. Sin resultado, honorarios reducidos al 50%.',
-    targetAudience: 'Casos complejos que requieren representación legal de primer nivel',
+    guarantee:
+      'Si no cumplimos algún plazo procesal por negligencia nuestra, asumimos todos los costes derivados de esa demora, incluyendo sanciones judiciales. Y cambiamos al abogado asignado sin coste adicional si el cliente lo solicita en los primeros 15 días.',
+    targetAudience:
+      'Particulares con procedimientos judiciales en marcha (divorcios con patrimonio significativo, herencias disputadas, accidentes de tráfico graves), PYMEs con litigios mercantiles, trabajadores en procedimientos de despido improcedente con salarios altos, cualquier persona acusada penalmente.',
     stripeProductId: process.env.STRIPE_PRODUCT_DEFENSA,
     stripePriceId: process.env.STRIPE_PRICE_DEFENSA,
   },
 ]
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 export function getProductBySlug(slug: string): Product | undefined {
   return PRODUCTS.find((p) => p.slug === slug)
@@ -218,12 +250,12 @@ export function getProductById(id: string): Product | undefined {
   return PRODUCTS.find((p) => p.id === id)
 }
 
-export function getProductsByCategory(category: Product['category']): Product[] {
-  return PRODUCTS.filter((p) => p.category === category)
+export function getFeaturedProducts(): Product[] {
+  return PRODUCTS.filter((p) => p.popular)
 }
 
-export function getPopularProducts(): Product[] {
-  return PRODUCTS.filter((p) => p.popular)
+export function getProductsByCategory(category: ProductCategory): Product[] {
+  return PRODUCTS.filter((p) => p.category === category)
 }
 
 export function formatPrice(price: number, currency = 'EUR'): string {
@@ -231,8 +263,8 @@ export function formatPrice(price: number, currency = 'EUR'): string {
   return new Intl.NumberFormat('es-ES', {
     style: 'currency',
     currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: price % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2,
   }).format(price)
 }
 

@@ -1,220 +1,351 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Car, Home, ShoppingBag, Phone, Plane, FileWarning, ChevronRight, TrendingUp } from "lucide-react";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
+import { ArrowRight, CheckCircle, Shield, Zap, Target, Building2, FileSignature, Scale } from "lucide-react";
 
 const services = [
   {
-    icon: Car,
-    emoji: "🚗",
-    title: "Multas de Tráfico",
-    subtitle: "DGT · Policía Municipal",
+    id: "escudo-total",
+    icon: Shield,
+    emoji: "🛡️",
+    name: "Escudo Total™",
+    badge: "MAS POPULAR",
+    badgeColor: "#D4AF37",
+    tagline: "Protección legal 360° para tu familia",
     description:
-      "Recurrimos multas de velocidad, estacionamiento, semáforos y cualquier sanción de tráfico. Analizamos defectos formales, prescripción y validez del radar.",
-    stats: "€320 recuperados de media",
-    successRate: 91,
-    href: "/reclamar?tipo=multa_trafico",
-    color: "text-amber-400",
-    bg: "from-amber-400/10 to-orange-500/5",
-    border: "border-amber-400/20",
-    hoverBorder: "hover:border-amber-400/40",
-    tag: "Más solicitado",
-    tagColor: "bg-amber-400/20 text-amber-400",
+      "Consultas ilimitadas con abogado colegiado, revisión de contratos y línea de emergencia 24/7. Tu escudo legal siempre activado.",
+    price: 29,
+    originalPrice: 599,
+    period: "/mes",
+    periodNote: "Facturado anualmente",
+    href: "/tienda/escudo-total",
+    featured: true,
+    color: "#D4AF37",
+    border: "rgba(212,175,55,0.35)",
+    bg: "rgba(212,175,55,0.06)",
+    highlights: ["Consultas ilimitadas < 2h", "Revisión de documentos", "Línea emergencia 24/7"],
   },
   {
-    icon: Home,
-    emoji: "🏠",
-    title: "Reclamaciones de Vivienda",
-    subtitle: "Alquiler · Compraventa · Hipoteca",
+    id: "analisis-expres",
+    icon: Zap,
+    emoji: "⚡",
+    name: "Análisis Exprés™",
+    badge: "60 SEGUNDOS",
+    badgeColor: "#2563EB",
+    tagline: "Resultado inmediato garantizado",
     description:
-      "Cláusulas abusivas en contratos de arrendamiento, fianzas no devueltas, defectos en la vivienda, gastos hipotecarios y cláusula suelo.",
-    stats: "€2.800 recuperados de media",
-    successRate: 88,
-    href: "/reclamar?tipo=contrato_vivienda",
-    color: "text-indigo-400",
-    bg: "from-indigo-400/10 to-purple-500/5",
-    border: "border-indigo-400/20",
-    hoverBorder: "hover:border-indigo-400/40",
-    tag: null,
-    tagColor: "",
+      "Sube cualquier contrato o multa. Nuestra IA lo analiza en 60 segundos: riesgos, cláusulas abusivas y recomendación de acción.",
+    price: 9.90,
+    originalPrice: 49,
+    period: "/análisis",
+    periodNote: "Pago único por uso",
+    href: "/tienda/analisis-expres",
+    featured: false,
+    color: "#2563EB",
+    border: "rgba(37,99,235,0.25)",
+    bg: "rgba(37,99,235,0.06)",
+    highlights: ["Detección de cláusulas abusivas", "Semáforo de riesgo", "Recomendación de acción"],
   },
   {
-    icon: ShoppingBag,
-    emoji: "📦",
-    title: "Devoluciones Online",
-    subtitle: "Amazon · AliExpress · Shein y más",
+    id: "recurso-garantizado",
+    icon: Target,
+    emoji: "🎯",
+    name: "Recurso Garantizado™",
+    badge: "SIN RIESGO",
+    badgeColor: "#059669",
+    tagline: "Solo pagas si ganamos",
     description:
-      "Productos no recibidos, defectuosos o que no corresponden con la descripción. Derecho de desistimiento y reclamaciones a marketplaces.",
-    stats: "€180 recuperados de media",
-    successRate: 96,
-    href: "/reclamar?tipo=compra_online",
-    color: "text-emerald-400",
-    bg: "from-emerald-400/10 to-teal-500/5",
-    border: "border-emerald-400/20",
-    hoverBorder: "hover:border-emerald-400/40",
-    tag: "Alta tasa de éxito",
-    tagColor: "bg-emerald-400/20 text-emerald-400",
+      "Recurrimos tu multa de tráfico sin coste inicial. Tasa de éxito del 67%. Si perdemos, no nos debes nada.",
+    price: 0,
+    originalPrice: null,
+    period: "",
+    periodNote: "30% del ahorro conseguido si ganamos",
+    href: "/tienda/recurso-garantizado",
+    featured: false,
+    color: "#059669",
+    border: "rgba(5,150,105,0.25)",
+    bg: "rgba(5,150,105,0.06)",
+    highlights: ["Análisis de viabilidad gratuito", "Abogado especialista en tráfico", "67% de recursos ganados"],
   },
   {
-    icon: Phone,
-    emoji: "📱",
-    title: "Conflictos con Telefónicas",
-    subtitle: "Vodafone · Movistar · Orange · MásMóvil",
+    id: "pack-empresarial",
+    icon: Building2,
+    emoji: "🏢",
+    name: "Pack Empresarial™",
+    badge: "PYMES",
+    badgeColor: "#7C3AED",
+    tagline: "Tu departamento jurídico externo",
     description:
-      "Cobros indebidos, permanencias abusivas, cambios de tarifa no comunicados y cargos por servicios no contratados. Reclamación ante la CNMC.",
-    stats: "€450 recuperados de media",
-    successRate: 89,
-    href: "/reclamar?tipo=telefonica",
-    color: "text-cyan-400",
-    bg: "from-cyan-400/10 to-blue-500/5",
-    border: "border-cyan-400/20",
-    hoverBorder: "hover:border-cyan-400/40",
-    tag: null,
-    tagColor: "",
+      "El equipo legal que tu empresa necesita pero no puede contratar internamente. Contratos, inspecciones, RGPD y más.",
+    price: 149,
+    originalPrice: 1200,
+    period: "/mes",
+    periodNote: "Sin permanencia — cancela cuando quieras",
+    href: "/tienda/pack-empresarial",
+    featured: false,
+    color: "#7C3AED",
+    border: "rgba(124,58,237,0.25)",
+    bg: "rgba(124,58,237,0.06)",
+    highlights: ["Abogado de empresa asignado", "Respuesta garantizada < 4h", "Auditoría RGPD incluida"],
   },
   {
-    icon: Plane,
-    emoji: "✈️",
-    title: "Reclamaciones Aerolíneas",
-    subtitle: "Vuelos cancelados · Retrasos · Denegación",
+    id: "contrato-blindado",
+    icon: FileSignature,
+    emoji: "✍️",
+    name: "Contrato Blindado™",
+    badge: "IA + ABOGADO",
+    badgeColor: "#0891B2",
+    tagline: "Doble revisión garantizada",
     description:
-      "Reglamento CE 261/2004. Compensaciones de hasta €600 por retrasos, cancelaciones y denegaciones de embarque. Sin comisión si no ganamos.",
-    stats: "€410 recuperados de media",
-    successRate: 93,
-    href: "/reclamar?tipo=aerolinea",
-    color: "text-rose-400",
-    bg: "from-rose-400/10 to-pink-500/5",
-    border: "border-rose-400/20",
-    hoverBorder: "hover:border-rose-400/40",
-    tag: "Sin pago inicial",
-    tagColor: "bg-rose-400/20 text-rose-400",
+      "IA en 60 segundos + abogado especialista. Recibes el informe de riesgos y la versión negociable lista para enviar.",
+    price: 149,
+    originalPrice: 450,
+    period: "/contrato",
+    periodNote: "Pago único — incluye consulta de 30 min",
+    href: "/tienda/contrato-blindado",
+    featured: false,
+    color: "#0891B2",
+    border: "rgba(8,145,178,0.25)",
+    bg: "rgba(8,145,178,0.06)",
+    highlights: ["Pre-análisis IA inmediato", "Revisión por abogado especialista", "Propuesta de redacción alternativa"],
   },
   {
-    icon: FileWarning,
-    emoji: "📋",
-    title: "Contratos Abusivos",
-    subtitle: "B2C · Préstamos · Seguros · Gimnasios",
+    id: "defensa-premium",
+    icon: Scale,
+    emoji: "👨‍⚖️",
+    name: "Defensa Premium™",
+    badge: "ABOGADO DEDICADO",
+    badgeColor: "#DC2626",
+    tagline: "Desde primer día hasta sentencia",
     description:
-      "Identificamos y reclamamos cláusulas nulas en contratos de consumo. Intereses usureros, penalizaciones desproporcionadas y condiciones ilegales.",
-    stats: "€1.200 recuperados de media",
-    successRate: 85,
-    href: "/reclamar?tipo=contrato_abusivo",
-    color: "text-violet-400",
-    bg: "from-violet-400/10 to-purple-500/5",
-    border: "border-violet-400/20",
-    hoverBorder: "hover:border-violet-400/40",
-    tag: null,
-    tagColor: "",
+      "Un abogado de élite asignado exclusivamente a tu caso. Estrategia personalizada, comunicación directa y seguimiento quincenal.",
+    price: 1200,
+    originalPrice: 3500,
+    period: "",
+    periodNote: "Evaluación gratuita — presupuesto personalizado",
+    href: "/tienda/defensa-premium",
+    featured: false,
+    color: "#DC2626",
+    border: "rgba(220,38,38,0.25)",
+    bg: "rgba(220,38,38,0.06)",
+    highlights: ["Abogado senior dedicado", "Estrategia legal escrita", "Representación completa"],
   },
 ];
 
-export default function Services() {
+const fadeInUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+  },
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
+interface ServiceCardProps {
+  service: (typeof services)[0];
+}
+
+function ServiceCard({ service }: ServiceCardProps) {
+  const isFree = service.price === 0;
+  const isFromPrice = service.id === "defensa-premium";
+
   return (
-    <section id="servicios" className="py-24 relative">
-      <div className="absolute inset-0 grid-pattern opacity-20" />
+    <Link href={service.href} className="block group">
+      <div
+        className="relative h-full rounded-2xl p-6 flex flex-col transition-all duration-250"
+        style={{
+          background: service.featured
+            ? "rgba(10, 22, 40, 0.8)"
+            : `rgba(15, 34, 64, 0.5)`,
+          backdropFilter: "blur(16px) saturate(180%)",
+          WebkitBackdropFilter: "blur(16px) saturate(180%)",
+          border: `1px solid ${service.border}`,
+          boxShadow: service.featured
+            ? `0 0 40px rgba(212,175,55,0.08), inset 0 1px 0 rgba(245,208,96,0.1)`
+            : "none",
+        }}
+      >
+        {/* Hover effect overlay */}
+        <div
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-250 pointer-events-none"
+          style={{ boxShadow: `0 0 30px ${service.color}18` }}
+        />
+
+        {/* Featured gold border glow */}
+        {service.featured && (
+          <div className="absolute -inset-px rounded-2xl pointer-events-none" style={{ background: `linear-gradient(135deg, rgba(212,175,55,0.3), transparent 50%, rgba(212,175,55,0.1))`, borderRadius: "inherit" }} />
+        )}
+
+        {/* Badge */}
+        <div className="flex items-start justify-between mb-5">
+          <div
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider"
+            style={{
+              background: `${service.badgeColor}18`,
+              color: service.badgeColor,
+              border: `1px solid ${service.badgeColor}30`,
+            }}
+          >
+            {service.badge}
+          </div>
+          <span className="text-2xl">{service.emoji}</span>
+        </div>
+
+        {/* Icon + Name */}
+        <div className="flex items-center gap-3 mb-3">
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+            style={{ background: service.bg }}
+          >
+            <service.icon className="w-5 h-5" style={{ color: service.color }} />
+          </div>
+          <h3
+            className="text-[#F8FAFC] font-semibold text-lg leading-tight"
+            style={{ fontFamily: "var(--font-inter)" }}
+          >
+            {service.name}
+          </h3>
+        </div>
+
+        {/* Tagline */}
+        <p className="text-sm font-medium mb-3" style={{ color: service.color }}>
+          {service.tagline}
+        </p>
+
+        {/* Description */}
+        <p className="text-[#94A3B8] text-sm leading-relaxed mb-5 flex-1">
+          {service.description}
+        </p>
+
+        {/* Highlights */}
+        <ul className="space-y-2 mb-6">
+          {service.highlights.map((h) => (
+            <li key={h} className="flex items-center gap-2 text-xs text-[#94A3B8]">
+              <CheckCircle className="w-3.5 h-3.5 shrink-0" style={{ color: service.color }} />
+              {h}
+            </li>
+          ))}
+        </ul>
+
+        {/* Price */}
+        <div className="pt-4 border-t" style={{ borderColor: `${service.border}` }}>
+          <div className="flex items-baseline gap-2 mb-0.5">
+            {isFree ? (
+              <span className="text-3xl font-bold" style={{ color: service.color }}>
+                0€ inicial
+              </span>
+            ) : (
+              <>
+                {isFromPrice && (
+                  <span className="text-sm text-[#94A3B8] mr-0.5">Desde</span>
+                )}
+                <span className="text-3xl font-bold" style={{ color: service.color }}>
+                  {service.price.toLocaleString("es-ES", { style: "currency", currency: "EUR", minimumFractionDigits: service.price % 1 !== 0 ? 2 : 0 })}
+                </span>
+                {service.period && (
+                  <span className="text-sm text-[#94A3B8]">{service.period}</span>
+                )}
+                {service.originalPrice && (
+                  <span className="text-sm text-[#475569] line-through ml-1">
+                    {service.originalPrice.toLocaleString("es-ES", { style: "currency", currency: "EUR", minimumFractionDigits: 0 })}
+                  </span>
+                )}
+              </>
+            )}
+          </div>
+          <p className="text-[#475569] text-xs">{service.periodNote}</p>
+        </div>
+
+        {/* CTA row */}
+        <div
+          className="mt-4 flex items-center justify-between text-sm font-medium transition-colors duration-200"
+          style={{ color: service.color }}
+        >
+          <span>Ver más detalles</span>
+          <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export default function Services() {
+  const sectionRef = useRef(null);
+  const inView = useInView(sectionRef, { once: true, margin: "-80px" });
+
+  return (
+    <section id="servicios" ref={sectionRef} className="py-24 relative">
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(180deg, #040B17 0%, #0A1628 100%)" }} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="text-center mb-14"
         >
-          <p className="text-indigo-400 text-sm font-semibold uppercase tracking-widest mb-4">
-            Nuestras especialidades
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] mb-3" style={{ color: "#D4AF37" }}>
+            Nuestros servicios
           </p>
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-6" style={{ fontFamily: "var(--font-space-grotesk)" }}>
-            ¿Qué tipo de caso
-            <span className="gradient-text-gold"> tienes?</span>
+          <h2
+            className="text-3xl md:text-5xl font-semibold text-[#F8FAFC] mb-4"
+            style={{ fontFamily: "var(--font-inter)", letterSpacing: "-0.01em" }}
+          >
+            La protección legal que{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg, #D4AF37 0%, #F5D060 50%, #D4AF37 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              necesitas
+            </span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
-            Cubrimos los principales conflictos legales del consumidor español.
-            Si no ves tu caso, contacta con nosotros — probablemente también podamos ayudarte.
+          <p className="text-[#94A3B8] max-w-2xl mx-auto text-base md:text-lg">
+            Desde protección continua para tu familia hasta representación completa en juicio.
+            Precios fijos y transparentes — sin sorpresas en la factura, nunca.
           </p>
         </motion.div>
 
         {/* Services grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, i) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-            >
-              <Link href={service.href}>
-                <div className={`relative h-full rounded-2xl p-6 bg-gradient-to-br ${service.bg} border ${service.border} ${service.hoverBorder} card-hover group transition-all duration-300 cursor-pointer`}>
-                  {/* Tag */}
-                  {service.tag && (
-                    <div className={`absolute top-4 right-4 px-2.5 py-1 rounded-full text-xs font-semibold ${service.tagColor}`}>
-                      {service.tag}
-                    </div>
-                  )}
-
-                  {/* Icon & emoji */}
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.bg} border ${service.border} flex items-center justify-center shrink-0`}>
-                      <service.icon className={`w-6 h-6 ${service.color}`} />
-                    </div>
-                    <span className="text-3xl mt-1">{service.emoji}</span>
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-lg font-bold text-white mb-1" style={{ fontFamily: "var(--font-space-grotesk)" }}>
-                    {service.title}
-                  </h3>
-                  <p className={`text-xs font-medium mb-3 ${service.color}`}>
-                    {service.subtitle}
-                  </p>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-4">
-                    {service.description}
-                  </p>
-
-                  {/* Stats */}
-                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                      <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>{service.stats}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-xs">
-                      <div className="w-16 h-1.5 rounded-full bg-white/10 overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-400"
-                          style={{ width: `${service.successRate}%` }}
-                        />
-                      </div>
-                      <span className="text-emerald-400 font-semibold">{service.successRate}%</span>
-                    </div>
-                  </div>
-
-                  {/* Hover arrow */}
-                  <div className={`absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${service.color}`}>
-                    <ChevronRight className="w-5 h-5" />
-                  </div>
-                </div>
-              </Link>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {services.map((service) => (
+            <motion.div key={service.id} variants={fadeInUp}>
+              <ServiceCard service={service} />
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Bottom note */}
+        {/* Bottom CTA */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-12"
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="text-center mt-10"
         >
-          <p className="text-slate-500 text-sm">
-            ¿No encuentras tu tipo de reclamación?{" "}
-            <a href="/reclamar" className="text-amber-400 hover:text-amber-300 transition-colors font-medium">
-              Cuéntanos tu caso y lo analizamos igualmente →
-            </a>
-          </p>
+          <Link
+            href="/tienda"
+            className="inline-flex items-center gap-2 text-[#D4AF37] hover:text-[#F5D060] font-medium text-sm transition-colors duration-200 border border-[rgba(212,175,55,0.3)] hover:border-[rgba(212,175,55,0.5)] px-5 py-2.5 rounded-xl hover:bg-[rgba(212,175,55,0.06)]"
+          >
+            Ver todos los servicios
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </motion.div>
       </div>
     </section>
