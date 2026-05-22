@@ -3,11 +3,34 @@
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ShoppingCart, Trash2, Plus, Minus, ArrowRight, ShieldCheck } from 'lucide-react'
+import {
+  X,
+  ShoppingCart,
+  Trash2,
+  Plus,
+  Minus,
+  ArrowRight,
+  ShieldCheck,
+  Shield,
+  Zap,
+  Target,
+  Building2,
+  FileCheck,
+  Scale,
+} from 'lucide-react'
 import { useCartStore } from '@/lib/cart-store'
 import { formatPrice, getBillingLabel } from '@/lib/products'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
+
+const ICON_MAP: Record<string, React.ElementType> = {
+  Shield,
+  Zap,
+  Target,
+  Building2,
+  FileCheck,
+  Scale,
+}
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, getSubtotal, getTax, getTotal, getItemCount } =
@@ -119,13 +142,12 @@ export function CartDrawer() {
                 </div>
 
                 {/* CTA */}
-                <Link href="/checkout" onClick={closeCart}>
+                <Link href="/checkout" onClick={closeCart} className="block w-full">
                   <Button
-                    variant="gold"
+                    variant="primary"
                     fullWidth
                     size="lg"
-                    icon={<ArrowRight className="h-4 w-4" />}
-                    iconPosition="right"
+                    rightIcon={<ArrowRight className="h-4 w-4" />}
                   >
                     Ir al pago seguro
                   </Button>
@@ -157,10 +179,13 @@ function CartItemRow({
   return (
     <div className="flex gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
       <div
-        className="text-xl p-2.5 rounded-lg shrink-0 h-fit"
+        className="p-2.5 rounded-lg shrink-0 h-fit"
         style={{ background: `${item.product.color}20` }}
       >
-        {item.product.icon}
+        {(() => {
+          const Icon = ICON_MAP[item.product.icon] ?? Shield
+          return <Icon className="h-5 w-5" style={{ color: item.product.color }} />
+        })()}
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-white leading-tight">{item.product.name}</p>

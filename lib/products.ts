@@ -12,24 +12,24 @@ export const PRODUCTS: Product[] = [
     slug: 'escudo-total',
     name: 'Escudo Total',
     trademark: 'Escudo Total™',
-    tagline: 'Tu escudo legal siempre activado, pase lo que pase.',
+    tagline: 'Protección legal ilimitada para ti y tu familia. Siempre activa.',
     description:
       'Protección legal 360° para tu familia durante todo el año. Desde contratos de alquiler hasta disputas laborales o problemas con vecinos: un abogado real responde en menos de 2 horas, ilimitado. Tu escudo legal siempre activado, pase lo que pase.',
     category: 'subscription',
     // Precio exacto del brief: 29€/mes (facturado anualmente: 348€/año)
     price: 29,
-    // Precio tachado del brief: ~~599€/año~~ equivalente mensual ≈ 50€ pero el brief indica 599/año
-    originalPrice: 599,
+    // Precio tachado del brief: equivalente anual despacho tradicional 599€/año → ~50€/mes
+    originalPrice: 50,
     currency: 'EUR',
     billingPeriod: 'month',
-    badge: { text: 'MÁS POPULAR — 3.847 familias protegidas este mes', color: 'gold' },
+    badge: { text: 'MÁS POPULAR', color: 'gold' },
     popular: true,
     urgent: false,
     successRate: 94,
     deliveryTime: 'Primer contacto en menos de 2 horas',
     icon: 'Shield',
-    color: '#2563EB',
-    gradient: 'linear-gradient(135deg, #1B3A6B 0%, #2563EB 100%)',
+    color: '#f59e0b',
+    gradient: 'from-amber-500 to-orange-600',
     features: [
       { text: 'Consultas ilimitadas con abogado colegiado (respuesta < 2h en horario laboral)', included: true, highlight: true },
       { text: 'Revisión de hasta 10 documentos/contratos al mes con informe escrito', included: true },
@@ -51,7 +51,7 @@ export const PRODUCTS: Product[] = [
     slug: 'analisis-expres',
     name: 'Análisis Exprés',
     trademark: 'Análisis Exprés™',
-    tagline: 'Tu documento analizado en 60 segundos. Sin esperas.',
+    tagline: 'Tu documento analizado por IA en 60 segundos. Sin esperas.',
     description:
       'Sube cualquier contrato, multa, carta notarial o documento legal y nuestra IA entrenada en Derecho Español te entrega en 60 segundos un análisis completo: riesgos, cláusulas abusivas, recomendaciones de acción y resumen ejecutivo. Sin esperas, sin citas, sin jerga legal.',
     category: 'one-time',
@@ -61,14 +61,14 @@ export const PRODUCTS: Product[] = [
     originalPrice: 49,
     currency: 'EUR',
     billingPeriod: 'one-time',
-    badge: { text: 'RESULTADO EN 60 SEGUNDOS — Garantizado', color: 'gold' },
+    badge: { text: 'RESULTADO EN 60 SEGUNDOS', color: 'gold' },
     popular: false,
     urgent: true,
     successRate: 100,
-    deliveryTime: '60 segundos',
+    deliveryTime: '60 segundos garantizados',
     icon: 'Zap',
-    color: '#D4AF37',
-    gradient: 'linear-gradient(135deg, #B8860B 0%, #D4AF37 100%)',
+    color: '#8b5cf6',
+    gradient: 'from-violet-500 to-purple-700',
     features: [
       { text: 'Análisis IA en menos de 60 segundos para cualquier documento (hasta 50 páginas)', included: true, highlight: true },
       { text: 'Detección automática de cláusulas abusivas o ilegales con cita legal exacta', included: true, highlight: true },
@@ -92,21 +92,21 @@ export const PRODUCTS: Product[] = [
     trademark: 'Recurso Garantizado™',
     tagline: 'Solo pagas si ganamos. Sin riesgo, sin coste inicial.',
     description:
-      'Recurrimos tu multa de tráfico sin que pagues ni un euro hasta que el recurso sea resuelto. Nuestros abogados especializados en derecho de tráfico tienen una tasa de éxito del 67%. Si ganamos, pagamos un porcentaje del ahorro conseguido. Si perdemos, no nos debes nada.',
+      'Recurrimos tu multa de tráfico sin que pagues ni un euro hasta que el recurso sea resuelto. Nuestros abogados especializados en derecho de tráfico tienen una tasa de éxito del 67%. Si ganamos, cobraremos un porcentaje del ahorro conseguido. Si perdemos, no nos debes nada.',
     category: 'success-fee',
     // Precio exacto del brief: 0€ de coste inicial — 30% del ahorro si ganamos
     price: 0,
     originalPrice: undefined,
     currency: 'EUR',
     billingPeriod: 'one-time',
-    badge: { text: 'SIN RIESGO — Solo pagas si ganamos', color: 'green' },
+    badge: { text: 'SIN RIESGO', color: 'red' },
     popular: false,
     urgent: true,
     successRate: 67,
     deliveryTime: 'Análisis de viabilidad en 24 horas',
-    icon: 'Target',
-    color: '#059669',
-    gradient: 'linear-gradient(135deg, #047857 0%, #059669 100%)',
+    icon: 'Trophy',
+    color: '#10b981',
+    gradient: 'from-emerald-500 to-green-600',
     features: [
       { text: 'Análisis de viabilidad gratuito en menos de 24 horas', included: true, highlight: true },
       { text: 'Abogado especialista en tráfico y sanciones administrativas asignado', included: true },
@@ -115,7 +115,7 @@ export const PRODUCTS: Product[] = [
       { text: 'Si el recurso fracasa, asesoramiento sobre opciones de pago reducido', included: true },
     ],
     guarantee:
-      'Si aceptamos el caso (tras análisis de viabilidad), garantizamos que el recurso se presenta correctamente y en plazo. Si por error nuestro se pierde el plazo de recurso, cubrimos el importe íntegro de la multa.',
+      'Si aceptamos el caso, garantizamos que el recurso se presenta correctamente y en plazo. Si por error nuestro se pierde el plazo de recurso, cubrimos el importe íntegro de la multa.',
     targetAudience:
       'Conductores con multas de más de 100€ (radares, semáforos, estacionamiento en zonas especiales), especialmente multas con puntos en juego, personas con multas que consideran injustas pero no saben cómo actuar.',
     stripeProductId: process.env.STRIPE_PRODUCT_RECURSO,
@@ -128,7 +128,7 @@ export const PRODUCTS: Product[] = [
     slug: 'pack-empresarial',
     name: 'Pack Empresarial',
     trademark: 'Pack Empresarial™',
-    tagline: 'Tu departamento jurídico completo. A precio SaaS.',
+    tagline: 'Tu departamento jurídico completo. A precio de suscripción SaaS.',
     description:
       'El departamento jurídico que tu empresa necesita pero no puede permitirse contratar internamente. Contratos con clientes, reclamaciones de proveedores, despidos, inspecciones laborales, RGPD y más: un equipo de abogados multidisciplinar trabaja como si estuviera en tu plantilla, a precio de suscripción SaaS.',
     category: 'subscription',
@@ -138,14 +138,14 @@ export const PRODUCTS: Product[] = [
     originalPrice: 1200,
     currency: 'EUR',
     billingPeriod: 'month',
-    badge: { text: 'PARA PYMEs — Hasta 50 empleados incluidos', color: 'blue' },
+    badge: { text: 'PARA PYMEs', color: 'blue' },
     popular: false,
     urgent: false,
     successRate: 94,
     deliveryTime: 'Primer contacto en menos de 4 horas',
     icon: 'Building2',
-    color: '#7C3AED',
-    gradient: 'linear-gradient(135deg, #5B21B6 0%, #7C3AED 100%)',
+    color: '#3b82f6',
+    gradient: 'from-blue-500 to-indigo-600',
     features: [
       { text: 'Abogado de empresa asignado con conocimiento de tu sector y contratos habituales', included: true, highlight: true },
       { text: 'Consultas ilimitadas por email, teléfono y videollamada (respuesta garantizada < 4h)', included: true, highlight: true },
@@ -177,14 +177,14 @@ export const PRODUCTS: Product[] = [
     originalPrice: 450,
     currency: 'EUR',
     billingPeriod: 'one-time',
-    badge: { text: 'ABOGADO + IA — Doble revisión garantizada', color: 'gold' },
+    badge: { text: 'ABOGADO + IA', color: 'gold' },
     popular: false,
     urgent: false,
     successRate: 98,
     deliveryTime: 'Informe en 24-48 horas',
     icon: 'FileCheck',
-    color: '#EA580C',
-    gradient: 'linear-gradient(135deg, #C2410C 0%, #EA580C 100%)',
+    color: '#06b6d4',
+    gradient: 'from-cyan-500 to-sky-600',
     features: [
       { text: 'Pre-análisis IA en 60 segundos con mapa completo de cláusulas de riesgo', included: true },
       { text: 'Revisión humana por abogado especialista en la materia del contrato (civil, mercantil, laboral)', included: true, highlight: true },
@@ -216,14 +216,14 @@ export const PRODUCTS: Product[] = [
     originalPrice: 3500,
     currency: 'EUR',
     billingPeriod: 'one-time',
-    badge: { text: 'ABOGADO DEDICADO — Desde primer día hasta sentencia', color: 'gold' },
+    badge: { text: 'PREMIUM', color: 'blue' },
     popular: false,
     urgent: false,
     successRate: 89,
     deliveryTime: 'Evaluación gratuita en 24 horas',
     icon: 'Scale',
-    color: '#DC2626',
-    gradient: 'linear-gradient(135deg, #991B1B 0%, #DC2626 100%)',
+    color: '#ec4899',
+    gradient: 'from-pink-500 to-rose-600',
     features: [
       { text: 'Abogado senior asignado y disponible directamente (sin intermediarios ni juniors)', included: true, highlight: true },
       { text: 'Estrategia legal escrita personalizada con escenarios de riesgo y probabilidades de éxito', included: true, highlight: true },
@@ -251,7 +251,7 @@ export function getProductById(id: string): Product | undefined {
 }
 
 export function getFeaturedProducts(): Product[] {
-  return PRODUCTS.filter((p) => p.popular)
+  return PRODUCTS.filter((p) => p.popular || p.badge)
 }
 
 export function getProductsByCategory(category: ProductCategory): Product[] {

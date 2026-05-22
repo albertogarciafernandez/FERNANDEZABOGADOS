@@ -1,343 +1,669 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { toast } from 'react-hot-toast'
-import { CreditCard, User, Mail, Phone, Building2, FileText, ShieldCheck, Loader2 } from 'lucide-react'
-import { useCartStore } from '@/lib/cart-store'
-import { Button } from '@/components/ui/Button'
-import { formatPrice } from '@/lib/products'
+import { useState, useCallback } from 'react'
+import {
+  User,
+  Mail,
+  Phone,
+  Building2,
+  FileText,
+  CreditCard,
+  ChevronRight,
+  ChevronLeft,
+  ShieldCheck,
+  Lock,
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
+  Receipt,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-interface FormData {
-  name: string
+// ─── Types ─────────────────────────────────────────────────────────────────────
+
+export interface CheckoutPersonalData {
+  nombre: string
+  apellidos: string
   email: string
-  phone: string
-  company: string
+  telefono: string
+  quiereFactura: boolean
+  empresa: string
   nif: string
-  acceptTerms: boolean
-  acceptPrivacy: boolean
 }
 
-const initialForm: FormData = {
-  name: '',
-  email: '',
-  phone: '',
-  company: '',
-  nif: '',
-  acceptTerms: false,
-  acceptPrivacy: false,
+export interface CheckoutFormProps {
+  /** Step 1 → 2 trigger. Called with collected personal data. */
+  onPersonalDataComplete: (data: CheckoutPersonalData) => void
+  /** Step 2 → 3 trigger. Called when T&C accepted. */
+  onConfirmationComplete: () => void
+  /** Reset form to step 1 */
+  onBack: () => void
+  currentStep: 1 | 2
+  loading?: boolean
+  error?: string | null
 }
 
-export function CheckoutForm() {
-  const router = useRouter()
-  const { items, getTotal, getSubtotal, getTax, clearCart } = useCartStore()
-  const [formData, setFormData] = useState<FormData>(initialForm)
-  const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({})
+// ─── Validators ────────────────────────────────────────────────────────────────
 
-  const validate = (): boolean => {
-    const newErrors: Partial<Record<keyof FormData, string>> = {}
-    if (!formData.name.trim()) newErrors.name = 'El nombre es obligatorio'
-    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Introduce un email válido'
-    }
-    if (!formData.acceptTerms) newErrors.acceptTerms = 'Debes aceptar los términos'
-    if (!formData.acceptPrivacy) newErrors.acceptPrivacy = 'Debes aceptar la política de privacidad'
+type PersonalErrors = Partial<Record<keyof CheckoutPersonalData, string>>
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+function validatePersonal(data: CheckoutPersonalData): PersonalErrors {
+  const errors: PersonalErrors = {}
+
+  if (!data.nombre.trim()) errors.nombre = 'El nombre es obligatorio'
+  if (!data.apellidos.trim()) errors.apellidos = 'Los apellidos son obligatorios'
+
+  if (!data.email.trim()) {
+    errors.email = 'El email es obligatorio'
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    errors.email = 'Introduce un email válido'
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!validate()) return
-    if (items.length === 0) {
-      toast.error('Tu carrito está vacío')
-      return
-    }
+  if (data.telefono && !/^[+\d\s\-()]{7,20}$/.test(data.telefono)) {
+    errors.telefono = 'Formato de teléfono no válido'
+  }
 
-    setLoading(true)
-    try {
-      const response = await fetch('/api/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items,
-          customer: {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            company: formData.company,
-            nif: formData.nif,
-          },
-        }),
-      })
-
-      if (!response.ok) {
-        const err = await response.json()
-        throw new Error(err.message || 'Error al procesar el pago')
-      }
-
-      const { url } = await response.json()
-
-      if (url) {
-        window.location.href = url
-      } else {
-        throw new Error('No se recibió la URL de pago')
-      }
-    } catch (error) {
-      console.error('Checkout error:', error)
-      toast.error(error instanceof Error ? error.message : 'Error al procesar el pago')
-    } finally {
-      setLoading(false)
+  if (data.quiereFactura) {
+    if (!data.empresa.trim()) errors.empresa = 'El nombre de empresa es obligatorio'
+    if (!data.nif.trim()) {
+      errors.nif = 'El NIF/CIF es obligatorio para factura'
+    } else if (!/^[A-Za-z0-9]{7,12}$/.test(data.nif.trim())) {
+      errors.nif = 'Formato de NIF/CIF no válido'
     }
   }
 
-  const handleChange = (field: keyof FormData) => (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
-    setFormData((prev) => ({ ...prev, [field]: value }))
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }))
-    }
-  }
-
-  if (items.length === 0) {
-    return (
-      <div className="text-center py-16">
-        <p className="text-white/50">No hay productos en tu carrito.</p>
-        <a href="/tienda" className="text-indigo-400 hover:text-indigo-300 text-sm mt-2 block">
-          Explorar servicios →
-        </a>
-      </div>
-    )
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-      {/* Left: Form */}
-      <div className="lg:col-span-3 space-y-6">
-        <div>
-          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <User className="h-4 w-4 text-indigo-400" />
-            Datos de contacto
-          </h2>
-          <div className="space-y-4">
-            <FormField
-              label="Nombre completo *"
-              icon={<User className="h-4 w-4" />}
-              value={formData.name}
-              onChange={handleChange('name')}
-              placeholder="Juan García Martínez"
-              error={errors.name}
-            />
-            <FormField
-              label="Email *"
-              icon={<Mail className="h-4 w-4" />}
-              type="email"
-              value={formData.email}
-              onChange={handleChange('email')}
-              placeholder="juan@empresa.com"
-              error={errors.email}
-            />
-            <FormField
-              label="Teléfono"
-              icon={<Phone className="h-4 w-4" />}
-              type="tel"
-              value={formData.phone}
-              onChange={handleChange('phone')}
-              placeholder="+34 600 000 000"
-            />
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <Building2 className="h-4 w-4 text-indigo-400" />
-            Datos de facturación (opcional)
-          </h2>
-          <div className="space-y-4">
-            <FormField
-              label="Empresa"
-              icon={<Building2 className="h-4 w-4" />}
-              value={formData.company}
-              onChange={handleChange('company')}
-              placeholder="Mi Empresa S.L."
-            />
-            <FormField
-              label="NIF / CIF"
-              icon={<FileText className="h-4 w-4" />}
-              value={formData.nif}
-              onChange={handleChange('nif')}
-              placeholder="B12345678"
-            />
-          </div>
-        </div>
-
-        {/* Legal checkboxes */}
-        <div className="space-y-3">
-          <CheckboxField
-            label={
-              <span>
-                Acepto los{' '}
-                <a href="/legal/terminos" className="text-indigo-400 hover:underline">
-                  Términos y Condiciones
-                </a>{' '}
-                del servicio
-              </span>
-            }
-            checked={formData.acceptTerms}
-            onChange={handleChange('acceptTerms')}
-            error={errors.acceptTerms}
-          />
-          <CheckboxField
-            label={
-              <span>
-                He leído y acepto la{' '}
-                <a href="/legal/privacidad" className="text-indigo-400 hover:underline">
-                  Política de Privacidad
-                </a>
-              </span>
-            }
-            checked={formData.acceptPrivacy}
-            onChange={handleChange('acceptPrivacy')}
-            error={errors.acceptPrivacy}
-          />
-        </div>
-      </div>
-
-      {/* Right: Order summary */}
-      <div className="lg:col-span-2">
-        <div className="sticky top-6 bg-surface border border-white/10 rounded-2xl p-6 space-y-5">
-          <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-            <CreditCard className="h-4 w-4 text-indigo-400" />
-            Resumen del pedido
-          </h2>
-
-          <div className="space-y-3">
-            {items.map((item) => (
-              <div key={item.product.id} className="flex justify-between text-sm">
-                <div className="flex items-center gap-2">
-                  <span>{item.product.icon}</span>
-                  <span className="text-white/70">
-                    {item.product.name}
-                    {item.quantity > 1 && ` ×${item.quantity}`}
-                  </span>
-                </div>
-                <span className="text-white font-medium">
-                  {formatPrice(item.product.price * item.quantity)}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div className="space-y-2 pt-3 border-t border-white/10 text-sm">
-            <div className="flex justify-between text-white/50">
-              <span>Subtotal</span>
-              <span>{formatPrice(getSubtotal())}</span>
-            </div>
-            <div className="flex justify-between text-white/50">
-              <span>IVA 21%</span>
-              <span>{formatPrice(getTax())}</span>
-            </div>
-            <div className="flex justify-between text-white font-bold text-base pt-2 border-t border-white/10">
-              <span>Total</span>
-              <span>{formatPrice(getTotal())}</span>
-            </div>
-          </div>
-
-          <Button
-            type="submit"
-            variant="gold"
-            fullWidth
-            size="lg"
-            loading={loading}
-            icon={<CreditCard className="h-4 w-4" />}
-          >
-            {loading ? 'Procesando...' : 'Pagar ahora'}
-          </Button>
-
-          <div className="flex items-center justify-center gap-2 text-xs text-white/30">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            <span>Pago seguro · SSL 256-bit · Stripe</span>
-          </div>
-        </div>
-      </div>
-    </form>
-  )
+  return errors
 }
 
-// ─── Sub-components ───────────────────────────────────────────────────────────
+// ─── Form input field ───────────────────────────────────────────────────────────
 
-function FormField({
+interface FieldProps {
+  label: string
+  name: string
+  type?: string
+  value: string
+  onChange: (val: string) => void
+  placeholder?: string
+  error?: string
+  icon?: React.ReactNode
+  required?: boolean
+  autoComplete?: string
+}
+
+function Field({
   label,
-  icon,
+  name,
+  type = 'text',
   value,
   onChange,
   placeholder,
-  type = 'text',
   error,
-}: {
-  label: string
-  icon: React.ReactNode
-  value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  placeholder?: string
-  type?: string
-  error?: string
-}) {
+  icon,
+  required,
+  autoComplete,
+}: FieldProps) {
+  const [touched, setTouched] = useState(false)
+  const showError = error && touched
+
   return (
     <div>
-      <label className="block text-xs font-medium text-white/50 mb-1.5 uppercase tracking-wide">
+      <label
+        htmlFor={name}
+        className="block text-[11px] font-semibold text-[#94A3B8] uppercase tracking-widest mb-1.5"
+      >
         {label}
+        {required && <span className="text-[#D4AF37] ml-0.5">*</span>}
       </label>
       <div className="relative">
-        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/20">{icon}</div>
+        {icon && (
+          <div
+            className={cn(
+              'absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors duration-150',
+              showError ? 'text-[#DC2626]' : value ? 'text-[#D4AF37]' : 'text-[#475569]',
+            )}
+          >
+            {icon}
+          </div>
+        )}
         <input
+          id={name}
+          name={name}
           type={type}
           value={value}
-          onChange={onChange}
+          autoComplete={autoComplete}
+          onChange={(e) => onChange(e.target.value)}
+          onBlur={() => setTouched(true)}
           placeholder={placeholder}
           className={cn(
-            'w-full pl-10 pr-4 py-3 rounded-xl text-sm',
-            'bg-white/[0.04] border text-white placeholder:text-white/20',
-            'focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-colors',
-            error ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-white/20'
+            'w-full py-3.5 rounded-xl text-sm text-[#F8FAFC] placeholder:text-[#475569]',
+            'bg-[rgba(22,45,82,0.6)] backdrop-blur-sm',
+            'border transition-all duration-150',
+            'focus:outline-none focus:ring-2 focus:ring-offset-0',
+            icon ? 'pl-10 pr-4' : 'px-4',
+            showError
+              ? 'border-[rgba(220,38,38,0.5)] focus:border-[rgba(220,38,38,0.7)] focus:ring-[rgba(220,38,38,0.2)]'
+              : value
+              ? 'border-[rgba(212,175,55,0.3)] focus:border-[rgba(212,175,55,0.5)] focus:ring-[rgba(212,175,55,0.15)]'
+              : 'border-[rgba(255,255,255,0.1)] focus:border-[rgba(212,175,55,0.4)] focus:ring-[rgba(212,175,55,0.12)]',
           )}
         />
+        {/* Valid indicator */}
+        {touched && !error && value && (
+          <CheckCircle2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#059669]" />
+        )}
+        {showError && (
+          <AlertCircle className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#DC2626]" />
+        )}
       </div>
-      {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
+      {showError && (
+        <p className="mt-1.5 text-xs text-[#DC2626] flex items-center gap-1">
+          <AlertCircle className="w-3 h-3 flex-shrink-0" />
+          {error}
+        </p>
+      )}
     </div>
   )
 }
 
+// ─── Checkbox field ─────────────────────────────────────────────────────────────
+
 function CheckboxField({
-  label,
   checked,
   onChange,
+  children,
   error,
 }: {
-  label: React.ReactNode
   checked: boolean
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (val: boolean) => void
+  children: React.ReactNode
   error?: string
 }) {
   return (
     <div>
       <label className="flex items-start gap-3 cursor-pointer group">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={onChange}
-          className="mt-0.5 h-4 w-4 rounded border-white/20 bg-white/5 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer"
-        />
-        <span className="text-sm text-white/60 group-hover:text-white/80 transition-colors leading-snug">
-          {label}
+        <div className="relative mt-0.5 flex-shrink-0">
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={(e) => onChange(e.target.checked)}
+            className="sr-only"
+          />
+          <div
+            className={cn(
+              'w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all duration-150',
+              checked
+                ? 'bg-[#D4AF37] border-[#D4AF37]'
+                : 'bg-[rgba(22,45,82,0.6)] border-[rgba(255,255,255,0.15)] group-hover:border-[rgba(212,175,55,0.4)]',
+            )}
+          >
+            {checked && (
+              <svg viewBox="0 0 12 10" className="w-3 h-3" fill="none">
+                <path
+                  d="M1 5l3.5 3.5L11 1"
+                  stroke="#040B17"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
+          </div>
+        </div>
+        <span className="text-sm text-[#94A3B8] group-hover:text-[#F8FAFC] transition-colors duration-150 leading-snug">
+          {children}
         </span>
       </label>
-      {error && <p className="mt-1 text-xs text-red-400 ml-7">{error}</p>}
+      {error && (
+        <p className="mt-1.5 text-xs text-[#DC2626] flex items-center gap-1 ml-8">
+          <AlertCircle className="w-3 h-3 flex-shrink-0" />
+          {error}
+        </p>
+      )}
+    </div>
+  )
+}
+
+// ─── Step 1 — Personal information ────────────────────────────────────────────
+
+interface Step1Props {
+  onComplete: (data: CheckoutPersonalData) => void
+}
+
+function Step1PersonalInfo({ onComplete }: Step1Props) {
+  const [data, setData] = useState<CheckoutPersonalData>({
+    nombre: '',
+    apellidos: '',
+    email: '',
+    telefono: '',
+    quiereFactura: false,
+    empresa: '',
+    nif: '',
+  })
+  const [errors, setErrors] = useState<PersonalErrors>({})
+  const [submitAttempted, setSubmitAttempted] = useState(false)
+
+  const update = useCallback(
+    <K extends keyof CheckoutPersonalData>(key: K, value: CheckoutPersonalData[K]) => {
+      setData((prev) => {
+        const next = { ...prev, [key]: value }
+        if (submitAttempted) setErrors(validatePersonal(next))
+        return next
+      })
+    },
+    [submitAttempted],
+  )
+
+  const handleSubmit = () => {
+    setSubmitAttempted(true)
+    const errs = validatePersonal(data)
+    setErrors(errs)
+    if (Object.keys(errs).length === 0) {
+      onComplete(data)
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Name row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Field
+          label="Nombre"
+          name="nombre"
+          value={data.nombre}
+          onChange={(v) => update('nombre', v)}
+          placeholder="Juan"
+          icon={<User className="w-4 h-4" />}
+          error={errors.nombre}
+          required
+          autoComplete="given-name"
+        />
+        <Field
+          label="Apellidos"
+          name="apellidos"
+          value={data.apellidos}
+          onChange={(v) => update('apellidos', v)}
+          placeholder="García Martínez"
+          icon={<User className="w-4 h-4" />}
+          error={errors.apellidos}
+          required
+          autoComplete="family-name"
+        />
+      </div>
+
+      <Field
+        label="Email"
+        name="email"
+        type="email"
+        value={data.email}
+        onChange={(v) => update('email', v)}
+        placeholder="juan@empresa.com"
+        icon={<Mail className="w-4 h-4" />}
+        error={errors.email}
+        required
+        autoComplete="email"
+      />
+
+      <Field
+        label="Teléfono"
+        name="telefono"
+        type="tel"
+        value={data.telefono}
+        onChange={(v) => update('telefono', v)}
+        placeholder="+34 600 000 000"
+        icon={<Phone className="w-4 h-4" />}
+        error={errors.telefono}
+        autoComplete="tel"
+      />
+
+      {/* Invoice toggle */}
+      <div className="p-4 rounded-xl border border-[rgba(212,175,55,0.12)] bg-[rgba(212,175,55,0.04)]">
+        <CheckboxField
+          checked={data.quiereFactura}
+          onChange={(v) => update('quiereFactura', v)}
+        >
+          <span className="font-medium text-[#F8FAFC]">Quiero factura para empresa</span>
+          <span className="block text-xs text-[#475569] mt-0.5">
+            Se habilitarán los campos de empresa y NIF/CIF
+          </span>
+        </CheckboxField>
+      </div>
+
+      {/* Company fields — conditional */}
+      {data.quiereFactura && (
+        <div className="space-y-4 animate-slide-in-up">
+          <div className="h-px bg-[rgba(212,175,55,0.1)]" />
+          <p className="text-[11px] font-semibold text-[#D4AF37] uppercase tracking-widest">
+            Datos de facturación
+          </p>
+          <Field
+            label="Nombre de empresa"
+            name="empresa"
+            value={data.empresa}
+            onChange={(v) => update('empresa', v)}
+            placeholder="Mi Empresa S.L."
+            icon={<Building2 className="w-4 h-4" />}
+            error={errors.empresa}
+            required
+            autoComplete="organization"
+          />
+          <Field
+            label="NIF / CIF"
+            name="nif"
+            value={data.nif}
+            onChange={(v) => update('nif', v.toUpperCase())}
+            placeholder="B12345678"
+            icon={<FileText className="w-4 h-4" />}
+            error={errors.nif}
+            required
+          />
+        </div>
+      )}
+
+      {/* CTA */}
+      <button
+        onClick={handleSubmit}
+        className="w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl font-bold text-[#040B17] text-base transition-all duration-200 hover:scale-[1.02] hover:shadow-[0_0_24px_rgba(212,175,55,0.35)] active:scale-[0.99]"
+        style={{ background: 'linear-gradient(135deg, #D4AF37 0%, #F5D060 50%, #D4AF37 100%)' }}
+      >
+        Continuar al resumen
+        <ChevronRight className="w-5 h-5" />
+      </button>
+    </div>
+  )
+}
+
+// ─── Step 2 — Confirmation ────────────────────────────────────────────────────
+
+interface Step2Props {
+  personalData: CheckoutPersonalData
+  onBack: () => void
+  onConfirm: () => void
+}
+
+function Step2Confirmation({ personalData, onBack, onConfirm }: Step2Props) {
+  const [acceptTerms, setAcceptTerms] = useState(false)
+  const [acceptPrivacy, setAcceptPrivacy] = useState(false)
+  const [termsError, setTermsError] = useState('')
+  const [privacyError, setPrivacyError] = useState('')
+
+  const handleConfirm = () => {
+    let valid = true
+    if (!acceptTerms) {
+      setTermsError('Debes aceptar los Términos y Condiciones para continuar')
+      valid = false
+    } else {
+      setTermsError('')
+    }
+    if (!acceptPrivacy) {
+      setPrivacyError('Debes aceptar la Política de Privacidad para continuar')
+      valid = false
+    } else {
+      setPrivacyError('')
+    }
+    if (valid) onConfirm()
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Personal data summary */}
+      <div className="p-5 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(22,45,82,0.4)]">
+        <div className="flex items-center gap-2 mb-4">
+          <User className="w-4 h-4 text-[#D4AF37]" />
+          <h3 className="text-sm font-semibold text-[#F8FAFC]">Datos confirmados</h3>
+          <button
+            onClick={onBack}
+            className="ml-auto text-[10px] text-[#D4AF37] hover:text-[#F5D060] transition-colors font-semibold uppercase tracking-wider"
+          >
+            Editar
+          </button>
+        </div>
+        <div className="space-y-2 text-sm">
+          <div className="flex gap-2">
+            <span className="text-[#475569] w-24 flex-shrink-0">Nombre:</span>
+            <span className="text-[#F8FAFC]">
+              {personalData.nombre} {personalData.apellidos}
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <span className="text-[#475569] w-24 flex-shrink-0">Email:</span>
+            <span className="text-[#F8FAFC]">{personalData.email}</span>
+          </div>
+          {personalData.telefono && (
+            <div className="flex gap-2">
+              <span className="text-[#475569] w-24 flex-shrink-0">Teléfono:</span>
+              <span className="text-[#F8FAFC]">{personalData.telefono}</span>
+            </div>
+          )}
+          {personalData.quiereFactura && (
+            <>
+              <div className="h-px bg-[rgba(255,255,255,0.06)] my-2" />
+              <div className="flex gap-2">
+                <span className="text-[#475569] w-24 flex-shrink-0">Empresa:</span>
+                <span className="text-[#F8FAFC]">{personalData.empresa}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="text-[#475569] w-24 flex-shrink-0">NIF/CIF:</span>
+                <span className="text-[#F8FAFC]">{personalData.nif}</span>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* SSL security badge */}
+      <div className="flex items-center gap-3 p-4 rounded-xl border border-[rgba(5,150,105,0.2)] bg-[rgba(5,150,105,0.06)]">
+        <ShieldCheck className="w-5 h-5 text-[#059669] flex-shrink-0" />
+        <div>
+          <p className="text-[#059669] text-sm font-semibold">Pago 100% seguro</p>
+          <p className="text-[#94A3B8] text-xs mt-0.5">
+            Tus datos están protegidos con encriptación SSL 256-bit. El pago es
+            procesado de forma segura por Stripe.
+          </p>
+        </div>
+        <div className="ml-auto flex-shrink-0">
+          <Lock className="w-4 h-4 text-[#059669]" />
+        </div>
+      </div>
+
+      {/* Legal acceptances */}
+      <div className="space-y-4">
+        <CheckboxField
+          checked={acceptTerms}
+          onChange={setAcceptTerms}
+          error={termsError}
+        >
+          He leído y acepto los{' '}
+          <a
+            href="/legal/terminos"
+            className="text-[#D4AF37] hover:text-[#F5D060] underline underline-offset-2 transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Términos y Condiciones
+          </a>{' '}
+          del servicio
+        </CheckboxField>
+
+        <CheckboxField
+          checked={acceptPrivacy}
+          onChange={setAcceptPrivacy}
+          error={privacyError}
+        >
+          He leído y acepto la{' '}
+          <a
+            href="/legal/privacidad"
+            className="text-[#D4AF37] hover:text-[#F5D060] underline underline-offset-2 transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Política de Privacidad
+          </a>{' '}
+          y el tratamiento de mis datos
+        </CheckboxField>
+      </div>
+
+      {/* RGPD note */}
+      <p className="text-[#475569] text-xs leading-relaxed border-l-2 border-[rgba(212,175,55,0.2)] pl-3">
+        En cumplimiento del RGPD, tus datos personales se utilizan exclusivamente
+        para gestionar el servicio contratado. Nunca los compartimos con terceros
+        sin tu consentimiento explícito.
+      </p>
+
+      {/* Actions */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <button
+          onClick={onBack}
+          className="flex items-center justify-center gap-2 py-3.5 px-5 rounded-xl text-sm font-medium text-[#94A3B8] border border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.03)] hover:text-[#F8FAFC] hover:border-[rgba(255,255,255,0.18)] transition-all duration-150"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          Volver
+        </button>
+
+        <button
+          onClick={handleConfirm}
+          className="flex-1 flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl font-bold text-[#040B17] text-base transition-all duration-200 hover:scale-[1.02] hover:shadow-[0_0_24px_rgba(212,175,55,0.35)] active:scale-[0.99]"
+          style={{ background: 'linear-gradient(135deg, #D4AF37 0%, #F5D060 50%, #D4AF37 100%)' }}
+        >
+          <CreditCard className="w-5 h-5" />
+          Ir al pago con Stripe
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ─── Main export ──────────────────────────────────────────────────────────────
+
+export function CheckoutForm({
+  onPersonalDataComplete,
+  onConfirmationComplete,
+  onBack,
+  currentStep,
+  loading = false,
+  error = null,
+}: CheckoutFormProps) {
+  const [personalData, setPersonalData] = useState<CheckoutPersonalData | null>(null)
+
+  const handleStep1Complete = (data: CheckoutPersonalData) => {
+    setPersonalData(data)
+    onPersonalDataComplete(data)
+  }
+
+  if (currentStep === 2 && personalData) {
+    return (
+      <Step2Confirmation
+        personalData={personalData}
+        onBack={onBack}
+        onConfirm={onConfirmationComplete}
+      />
+    )
+  }
+
+  return <Step1PersonalInfo onComplete={handleStep1Complete} />
+}
+
+// ─── Step 3 — Payment trigger ─────────────────────────────────────────────────
+
+interface Step3Props {
+  onPay: () => void
+  onBack: () => void
+  loading: boolean
+  error: string | null
+  total: string
+}
+
+export function Step3Payment({ onPay, onBack, loading, error, total }: Step3Props) {
+  return (
+    <div className="space-y-6">
+      {/* Stripe badge */}
+      <div className="flex items-center gap-4 p-5 rounded-xl border border-[rgba(99,91,255,0.2)] bg-[rgba(99,91,255,0.06)]">
+        <div className="w-12 h-12 rounded-xl bg-[rgba(99,91,255,0.15)] flex items-center justify-center flex-shrink-0">
+          <CreditCard className="w-6 h-6 text-[#635BFF]" />
+        </div>
+        <div>
+          <p className="text-[#F8FAFC] font-semibold text-sm">Pago procesado por Stripe</p>
+          <p className="text-[#94A3B8] text-xs mt-0.5">
+            Plataforma de pagos certificada PCI DSS Level 1. Tus datos de tarjeta nunca
+            tocan nuestros servidores.
+          </p>
+        </div>
+      </div>
+
+      {/* Payment methods accepted */}
+      <div className="grid grid-cols-2 gap-3">
+        {[
+          { label: 'Tarjeta Visa / Mastercard', icon: CreditCard },
+          { label: 'Apple Pay / Google Pay', icon: ShieldCheck },
+          { label: 'Bizum', icon: Receipt },
+          { label: 'Transferencia bancaria', icon: Building2 },
+        ].map(({ label, icon: Icon }) => (
+          <div
+            key={label}
+            className="flex items-center gap-2.5 p-3 rounded-xl border border-[rgba(255,255,255,0.07)] bg-[rgba(22,45,82,0.3)] text-xs text-[#94A3B8]"
+          >
+            <Icon className="w-3.5 h-3.5 text-[#475569]" />
+            {label}
+          </div>
+        ))}
+      </div>
+
+      {/* Error message */}
+      {error && (
+        <div className="flex items-start gap-3 p-4 rounded-xl border border-[rgba(220,38,38,0.3)] bg-[rgba(220,38,38,0.08)]">
+          <AlertCircle className="w-5 h-5 text-[#DC2626] flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="text-[#DC2626] text-sm font-semibold">Error al procesar el pago</p>
+            <p className="text-[#94A3B8] text-xs mt-1">{error}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Pay button */}
+      <button
+        onClick={onPay}
+        disabled={loading}
+        className={cn(
+          'w-full flex items-center justify-center gap-3 py-5 px-6 rounded-xl font-black text-lg transition-all duration-200',
+          loading
+            ? 'opacity-80 cursor-not-allowed'
+            : 'hover:scale-[1.02] hover:shadow-[0_0_32px_rgba(212,175,55,0.4)] active:scale-[0.99]',
+          'text-[#040B17]',
+        )}
+        style={{
+          background: loading
+            ? 'linear-gradient(135deg, #B8860B 0%, #D4AF37 100%)'
+            : 'linear-gradient(135deg, #D4AF37 0%, #F5D060 50%, #D4AF37 100%)',
+        }}
+      >
+        {loading ? (
+          <>
+            <Loader2 className="w-5 h-5 animate-spin" />
+            Redirigiendo a Stripe…
+          </>
+        ) : (
+          <>
+            <Lock className="w-5 h-5" />
+            Pagar ahora {total}
+            <ChevronRight className="w-5 h-5" />
+          </>
+        )}
+      </button>
+
+      {/* Guarantee note */}
+      <p className="text-center text-[#475569] text-xs leading-relaxed">
+        Garantía de satisfacción 30 días · Sin permanencia · Reembolso inmediato
+      </p>
+
+      {/* Back button */}
+      <button
+        onClick={onBack}
+        disabled={loading}
+        className="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-xl text-sm font-medium text-[#94A3B8] border border-[rgba(255,255,255,0.08)] bg-transparent hover:text-[#F8FAFC] hover:border-[rgba(255,255,255,0.15)] transition-all duration-150 disabled:opacity-40"
+      >
+        <ChevronLeft className="w-4 h-4" />
+        Volver al resumen
+      </button>
     </div>
   )
 }
