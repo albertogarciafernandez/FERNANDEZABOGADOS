@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import OrganizationJsonLd from "@/components/seo/OrganizationJsonLd";
+import { defaultMetadata } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -15,25 +17,7 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Justicia Legalia | Recurre tus Multas con Inteligencia Artificial",
-  description:
-    "Plataforma legal impulsada por IA para recurrir multas de tráfico, reclamaciones de consumidores, contratos de vivienda y reclamaciones legales. 94% de éxito garantizado.",
-  keywords:
-    "recurrir multa, abogado IA, reclamación legal, multa tráfico, consumidor, contrato vivienda, inteligencia artificial, DGT",
-  authors: [{ name: "Justicia Legalia" }],
-  openGraph: {
-    title: "Justicia Legalia | Tu Escudo Legal con IA",
-    description:
-      "Recurre multas y reclamaciones con Inteligencia Artificial. 94% de éxito. Sin pago si no ganamos.",
-    type: "website",
-    locale: "es_ES",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+export const metadata: Metadata = defaultMetadata;
 
 export default function RootLayout({
   children,
@@ -47,6 +31,8 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="antialiased">
+        {/* JSON-LD de organización: presente en todas las páginas */}
+        <OrganizationJsonLd />
         {children}
         <Analytics />
       </body>
