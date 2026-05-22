@@ -77,8 +77,8 @@ export async function POST(request: NextRequest) {
         console.log(`  Cliente ID     : ${subscription.customer}`)
         console.log(`  Estado         : ${subscription.status}`)
         console.log(`  Producto ID    : ${subscription.metadata?.productId ?? 'N/A'}`)
-        console.log(`  Período inicio : ${new Date((subscription.current_period_start) * 1000).toISOString()}`)
-        console.log(`  Período fin    : ${new Date((subscription.current_period_end) * 1000).toISOString()}`)
+        console.log(`  Ciclo de facturación: ${new Date(subscription.billing_cycle_anchor * 1000).toISOString()}`)
+        console.log(`  Cancela en     : ${subscription.cancel_at ? new Date(subscription.cancel_at * 1000).toISOString() : 'N/A'}`)
 
         // TODO: Activar el plan en la cuenta del usuario
         // await db.subscriptions.create({ subscriptionId: subscription.id, ... })
