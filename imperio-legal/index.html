@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Imperio Legal SLP — Consultoría jurídica online con IA. 8 agentes especializados, calculadoras legales, documentos en minutos. Orientación legal 24/7 en España.">
+  <meta name="keywords" content="consultoría jurídica online, asesoría legal IA, derecho laboral, abogado online España, calculadora despido, reclamaciones online">
+  <meta property="og:title" content="Imperio Legal SLP — Tu escudo legal. Siempre encendido.">
+  <meta property="og:description" content="Consultoría jurídica online con 8 agentes IA especializados. Orientación legal 24/7.">
+  <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://imperiolegal.es/">
+  <title>Imperio Legal SLP — Tu escudo legal. Siempre encendido.</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LegalService",
+        "@id": "https://imperiolegal.es/#organization",
+        "name": "Imperio Legal SLP",
+        "description": "Plataforma de consultoría jurídica online con inteligencia artificial en España. Orientación legal 24/7.",
+        "url": "https://imperiolegal.es",
+        "logo": "https://imperiolegal.es/img/logo.png",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "ES",
+          "addressLocality": "España"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "availableLanguage": "Spanish"
+        },
+        "areaServed": "ES",
+        "serviceType": ["Consultoría jurídica", "Orientación legal online", "Redacción de documentos"]
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <!-- Particles -->
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <!-- ── NAVIGATION ── -->
+  <nav id="nav" class="nav" role="navigation" aria-label="Navegación principal">
+    <div class="nav-inner">
+      <a href="#inicio" class="nav-logo" aria-label="Imperio Legal SLP — Inicio">
+        <!-- Sello Judicial SVG -->
+        <svg class="nav-logo-seal" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="21" cy="21" r="20" stroke="#D4AF37" stroke-width="1.5" fill="none"/>
+          <circle cx="21" cy="21" r="16" stroke="#D4AF37" stroke-width="0.75" stroke-dasharray="3 2" fill="none"/>
+          <!-- Balanza simplificada -->
+          <line x1="21" y1="10" x2="21" y2="32" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="12" y1="16" x2="30" y2="16" stroke="#D4AF37" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="12" cy="22" r="4" stroke="#D4AF37" stroke-width="1" fill="rgba(212,175,55,0.1)"/>
+          <circle cx="30" cy="22" r="4" stroke="#D4AF37" stroke-width="1" fill="rgba(212,175,55,0.1)"/>
+          <line x1="12" y1="16" x2="12" y2="18" stroke="#D4AF37" stroke-width="1"/>
+          <line x1="30" y1="16" x2="30" y2="18" stroke="#D4AF37" stroke-width="1"/>
+        </svg>
+        <div class="nav-logo-text">
+          <strong>Imperio Legal</strong>
+          <span>SLP · Consultoría Online</span>
+        </div>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#agentes">Agentes IA</a></li>
+        <li><a href="#calculadoras">Calculadoras</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#testimonios">Opiniones</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="#contacto" class="btn btn-secondary">Consulta gratis</a>
+        <a href="#precios" class="btn btn-primary">Empezar ahora</a>
+      </div>
+
+      <button id="mobile-menu-btn" class="nav-mobile-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu" role="dialog" aria-label="Menú móvil" style="display:none;position:absolute;top:100%;left:0;right:0;background:rgba(5,5,8,0.98);backdrop-filter:blur(20px);border-bottom:1px solid rgba(212,175,55,0.2);padding:1rem 1.5rem;">
+      <style>#mobile-menu.open{display:block!important}</style>
+      <a href="#servicios" style="display:block;padding:12px 0;color:#c9c4b0;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.06)">Servicios</a>
+      <a href="#agentes" style="display:block;padding:12px 0;color:#c9c4b0;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.06)">Agentes IA</a>
+      <a href="#calculadoras" style="display:block;padding:12px 0;color:#c9c4b0;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.06)">Calculadoras</a>
+      <a href="#precios" style="display:block;padding:12px 0;color:#c9c4b0;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.06)">Precios</a>
+      <a href="#contacto" style="display:block;padding:12px 0;color:#D4AF37;text-decoration:none;font-weight:600">Consulta gratis →</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ── HERO ── -->
+    <section id="inicio" class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+
+      <!-- Court Columns Decoration -->
+      <div class="hero-columns" aria-hidden="true">
+        <div class="column-pillar column-1"></div>
+        <div class="column-pillar column-2"></div>
+        <div class="column-pillar column-3"></div>
+        <div class="column-pillar column-4"></div>
+        <div class="column-pillar column-5"></div>
+        <div class="column-pillar column-6"></div>
+      </div>
+
+      <!-- Scales of Justice -->
+      <div class="scales-container" aria-hidden="true">
+        <svg width="320" height="400" viewBox="0 0 320 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Pedestal -->
+          <rect x="145" y="360" width="30" height="30" fill="#D4AF37"/>
+          <rect x="110" y="385" width="100" height="12" rx="2" fill="#B8962A"/>
+          <!-- Mástil -->
+          <rect x="158" y="80" width="4" height="285" fill="#D4AF37"/>
+          <!-- Brazo horizontal -->
+          <rect x="60" y="92" width="200" height="4" rx="2" fill="#D4AF37"/>
+          <!-- Cadenas izquierda -->
+          <line x1="80" y1="96" x2="75" y2="190" stroke="#D4AF37" stroke-width="2"/>
+          <line x1="85" y1="96" x2="90" y2="190" stroke="#D4AF37" stroke-width="2"/>
+          <!-- Platillo izquierda -->
+          <ellipse cx="83" cy="200" rx="40" ry="12" stroke="#D4AF37" stroke-width="2" fill="rgba(212,175,55,0.12)"/>
+          <!-- Cadenas derecha -->
+          <line x1="240" y1="96" x2="235" y2="180" stroke="#D4AF37" stroke-width="2"/>
+          <line x1="245" y1="96" x2="250" y2="180" stroke="#D4AF37" stroke-width="2"/>
+          <!-- Platillo derecha (levemente elevado) -->
+          <ellipse cx="243" cy="190" rx="40" ry="12" stroke="#D4AF37" stroke-width="2" fill="rgba(212,175,55,0.12)"/>
+          <!-- Remate superior -->
+          <circle cx="160" cy="76" r="10" stroke="#D4AF37" stroke-width="2" fill="rgba(212,175,55,0.2)"/>
+          <path d="M155 70 L160 60 L165 70" stroke="#D4AF37" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+
+      <!-- Hero Content -->
+      <div class="hero-badge">
+        <span class="badge badge-gold">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="6" cy="6" r="6"/></svg>
+          Consultoría jurídica online · España · 24/7
+        </span>
+      </div>
+
+      <h1 class="hero-title" id="hero-3d">
+        <span class="line-gold">Tu escudo legal.</span>
+        <span class="line-white">Siempre encendido.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        8 agentes de IA especializados en derecho español. Orientación legal instantánea,
+        documentos en minutos y calculadoras jurídicas precisas. Todo sin salir de casa.
+      </p>
+
+      <div class="hero-cta">
+        <a href="#contacto" class="btn btn-primary" style="font-size:1rem;padding:16px 36px;">
+          Consulta gratuita →
+        </a>
+        <a href="#agentes" class="btn btn-secondary">
+          Ver agentes IA
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="hero-stats">
+        <div class="hero-stat-item">
+          <div class="hero-stat-num"><span data-counter="4700" data-suffix="+">0+</span></div>
+          <div class="hero-stat-label">Consultas resueltas</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num"><span data-counter="98.2" data-suffix="%">0%</span></div>
+          <div class="hero-stat-label">Satisfacción cliente</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num">8</div>
+          <div class="hero-stat-label">Agentes IA activos</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-num"><span data-counter="24" data-suffix="h">0h</span></div>
+          <div class="hero-stat-label">Disponibilidad</div>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <a href="#servicios" style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);color:rgba(212,175,55,0.5);animation:fadeUp 1s ease both 1s;" aria-label="Desplazar hacia abajo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+    </section>
+
+    <div class="divider-gold"></div>
+
+    <!-- ── AVISO LEGAL ── -->
+    <section class="section-sm" style="background:rgba(212,175,55,0.04);border-top:1px solid rgba(212,175,55,0.15);border-bottom:1px solid rgba(212,175,55,0.15);">
+      <div class="container">
+        <p style="font-size:0.8rem;color:#8e8a7a;text-align:center;max-width:900px;margin:0 auto;line-height:1.7;">
+          <strong style="color:#D4AF37;">Aviso importante:</strong> Imperio Legal SLP presta servicios de <strong>consultoría, orientación e información jurídica</strong>.
+          No ejercemos la abogacía ni sustituimos al asesoramiento de un abogado colegiado. Toda información proporcionada tiene carácter
+          orientativo e informativo conforme al Art. 10 LSSI-CE. Para actuaciones procesales, firmar contratos o tomar decisiones jurídicas
+          relevantes, le recomendamos consultar con un abogado colegiado en el ICAM u otro colegio competente.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── SERVICIOS ── -->
+    <section id="servicios" class="section">
+      <div class="container">
+        <div class="text-center mb-8">
+          <span class="section-label reveal">Lo que podemos hacer por ti</span>
+          <h2 class="section-title reveal reveal-delay-1">Servicios jurídicos online</h2>
+          <p class="section-subtitle reveal reveal-delay-2">
+            Todo lo que necesitas para defender tus derechos, sin colas ni desplazamientos.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card reveal">
+            <div style="font-size:2.5rem;margin-bottom:1rem;">⚖️</div>
+            <h3 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:0.75rem;">Orientación Legal IA</h3>
+            <p style="font-size:0.875rem;color:var(--text-300);line-height:1.7;">Consultas ilimitadas a nuestros 8 agentes IA especializados. Respuestas basadas en legislación española actualizada.</p>
+          </div>
+          <div class="card reveal reveal-delay-1">
+            <div style="font-size:2.5rem;margin-bottom:1rem;">📄</div>
+            <h3 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:0.75rem;">Redacción de Documentos</h3>
+            <p style="font-size:0.875rem;color:var(--text-300);line-height:1.7;">Burofaxes, contratos, recursos, reclamaciones y más. Documentos personalizados en 10-30 minutos.</p>
+          </div>
+          <div class="card reveal reveal-delay-2">
+            <div style="font-size:2.5rem;margin-bottom:1rem;">🔢</div>
+            <h3 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:0.75rem;">Calculadoras Jurídicas</h3>
+            <p style="font-size:0.875rem;color:var(--text-300);line-height:1.7;">Calcula indemnizaciones, plazos, pensiones alimenticias, costas e impuesto de sucesiones al instante.</p>
+          </div>
+          <div class="card reveal">
+            <div style="font-size:2.5rem;margin-bottom:1rem;">📊</div>
+            <h3 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:0.75rem;">Análisis de Viabilidad</h3>
+            <p style="font-size:0.875rem;color:var(--text-300);line-height:1.7;">MÉTRICA analiza tu caso y te da una estimación de probabilidades de éxito basada en jurisprudencia real.</p>
+          </div>
+          <div class="card reveal reveal-delay-1">
+            <div style="font-size:2.5rem;margin-bottom:1rem;">🔒</div>
+            <h3 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:0.75rem;">Auditoría RGPD</h3>
+            <p style="font-size:0.875rem;color:var(--text-300);line-height:1.7;">CUSTODIA audita tu empresa u organización y elabora el plan de adecuación al RGPD y LOPDGDD.</p>
+          </div>
+          <div class="card reveal reveal-delay-2">
+            <div style="font-size:2.5rem;margin-bottom:1rem;">🏛️</div>
+            <h3 style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:0.75rem;">Constitución de Empresas</h3>
+            <p style="font-size:0.875rem;color:var(--text-300);line-height:1.7;">CONSTRUCTOR diseña la arquitectura jurídica óptima para tu negocio: S.L., S.L.P., autónomo o cooperativa.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── AGENTES IA ── -->
+    <section id="agentes" class="section" style="background:rgba(5,5,8,0.5);">
+      <div class="container">
+        <div class="text-center mb-8">
+          <span class="section-label reveal">Inteligencia artificial jurídica</span>
+          <h2 class="section-title reveal reveal-delay-1">8 Agentes IA Especializados</h2>
+          <p class="section-subtitle reveal reveal-delay-2">
+            Cada agente domina su área del derecho. Pasa el cursor para ver sus capacidades.
+          </p>
+        </div>
+
+        <div class="grid-4">
+          <!-- ARPA -->
+          <div class="flip-card reveal">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="agent-icon">🔍</div>
+                <div class="agent-name">ARPA</div>
+                <div class="agent-role">Procedimientos</div>
+                <div class="agent-tagline">Análisis exhaustivo de trámites administrativos</div>
+              </div>
+              <div class="flip-card-back">
+                <div>
+                  <div class="agent-back-title">Capacidades ARPA</div>
+                  <ul class="agent-capabilities">
+                    <li>Recursos administrativos</li>
+                    <li>Plazos y caducidades</li>
+                    <li>ERTE y expedientes</li>
+                    <li>Responsabilidad patrimonial</li>
+                    <li>Procedimientos sancionadores</li>
+                  </ul>
+                </div>
+                <button class="btn btn-secondary w-full" onclick="document.getElementById('chatbot-fab').click();" style="margin-top:1rem;">Consultar →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- LEGIS -->
+          <div class="flip-card reveal reveal-delay-1">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="agent-icon">📚</div>
+                <div class="agent-name">LEGIS</div>
+                <div class="agent-role">Legislación</div>
+                <div class="agent-tagline">Base normativa actualizada del BOE</div>
+              </div>
+              <div class="flip-card-back">
+                <div>
+                  <div class="agent-back-title">Capacidades LEGIS</div>
+                  <ul class="agent-capabilities">
+                    <li>Código Civil y Penal</li>
+                    <li>Estatuto de los Trabajadores</li>
+                    <li>Legislación administrativa</li>
+                    <li>Normativa RGPD y LOPDGDD</li>
+                    <li>Ley de Consumidores</li>
+                  </ul>
+                </div>
+                <button class="btn btn-secondary w-full" onclick="document.getElementById('chatbot-fab').click();" style="margin-top:1rem;">Consultar →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- LEX -->
+          <div class="flip-card reveal reveal-delay-2">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="agent-icon">⚖️</div>
+                <div class="agent-name">LEX</div>
+                <div class="agent-role">Asesoría 24/7</div>
+                <div class="agent-tagline">Tu asesor legal personal a cualquier hora</div>
+              </div>
+              <div class="flip-card-back">
+                <div>
+                  <div class="agent-back-title">Capacidades LEX</div>
+                  <ul class="agent-capabilities">
+                    <li>Despidos y contratos laborales</li>
+                    <li>Accidentes de tráfico</li>
+                    <li>Divorcios y separaciones</li>
+                    <li>Herencias y sucesiones</li>
+                    <li>Cláusulas abusivas</li>
+                  </ul>
+                </div>
+                <button class="btn btn-secondary w-full" onclick="document.getElementById('chatbot-fab').click();" style="margin-top:1rem;">Consultar →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SCRIPTOR -->
+          <div class="flip-card reveal reveal-delay-3">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="agent-icon">✍️</div>
+                <div class="agent-name">SCRIPTOR</div>
+                <div class="agent-role">Documentos</div>
+                <div class="agent-tagline">Redacción jurídica profesional en minutos</div>
+              </div>
+              <div class="flip-card-back">
+                <div>
+                  <div class="agent-back-title">Capacidades SCRIPTOR</div>
+                  <ul class="agent-capabilities">
+                    <li>Burofaxes y requerimientos</li>
+                    <li>Contratos de servicios</li>
+                    <li>Recursos y demandas</li>
+                    <li>Convenios de divorcio</li>
+                    <li>Reclamaciones bancarias</li>
+                  </ul>
+                </div>
+                <button class="btn btn-secondary w-full" onclick="document.getElementById('chatbot-fab').click();" style="margin-top:1rem;">Generar →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- METRICA -->
+          <div class="flip-card reveal">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="agent-icon">📊</div>
+                <div class="agent-name">MÉTRICA</div>
+                <div class="agent-role">Predicción</div>
+                <div class="agent-tagline">Probabilidades de éxito basadas en jurisprudencia</div>
+              </div>
+              <div class="flip-card-back">
+                <div>
+                  <div class="agent-back-title">Capacidades MÉTRICA</div>
+                  <ul class="agent-capabilities">
+                    <li>Análisis de viabilidad</li>
+                    <li>Estimación indemnizaciones</li>
+                    <li>ROI de acciones legales</li>
+                    <li>Comparativa de estrategias</li>
+                    <li>Datos de jurisprudencia</li>
+                  </ul>
+                </div>
+                <button class="btn btn-secondary w-full" onclick="document.getElementById('chatbot-fab').click();" style="margin-top:1rem;">Analizar →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CUSTODIA -->
+          <div class="flip-card reveal reveal-delay-1">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="agent-icon">🛡️</div>
+                <div class="agent-name">CUSTODIA</div>
+                <div class="agent-role">RGPD / DPO</div>
+                <div class="agent-tagline">Protección de datos y compliance digital</div>
+              </div>
+              <div class="flip-card-back">
+                <div>
+                  <div class="agent-back-title">Capacidades CUSTODIA</div>
+                  <ul class="agent-capabilities">
+                    <li>Auditoría RGPD</li>
+                    <li>Registro de tratamientos</li>
+                    <li>Derechos ARSLOP</li>
+                    <li>Protocolos brecha seguridad</li>
+                    <li>DPO externo virtual</li>
+                  </ul>
+                </div>
+                <button class="btn btn-secondary w-full" onclick="document.getElementById('chatbot-fab').click();" style="margin-top:1rem;">Auditar →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- NEXUS -->
+          <div class="flip-card reveal reveal-delay-2">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="agent-icon">📅</div>
+                <div class="agent-name">NEXUS</div>
+                <div class="agent-role">Expedientes</div>
+                <div class="agent-tagline">Control de plazos y gestión procesal</div>
+              </div>
+              <div class="flip-card-back">
+                <div>
+                  <div class="agent-back-title">Capacidades NEXUS</div>
+                  <ul class="agent-capabilities">
+                    <li>Plazos de prescripción</li>
+                    <li>Calendario procesal</li>
+                    <li>Alertas de caducidad</li>
+                    <li>Seguimiento expedientes</li>
+                    <li>Hitos judiciales</li>
+                  </ul>
+                </div>
+                <button class="btn btn-secondary w-full" onclick="document.getElementById('chatbot-fab').click();" style="margin-top:1rem;">Calcular →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CONSTRUCTOR -->
+          <div class="flip-card reveal reveal-delay-3">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="agent-icon">🏛️</div>
+                <div class="agent-name">CONSTRUCTOR</div>
+                <div class="agent-role">Societario</div>
+                <div class="agent-tagline">Arquitectura jurídica para tu negocio</div>
+              </div>
+              <div class="flip-card-back">
+                <div>
+                  <div class="agent-back-title">Capacidades CONSTRUCTOR</div>
+                  <ul class="agent-capabilities">
+                    <li>Comparativa formas jurídicas</li>
+                    <li>S.L. vs S.L.P. vs Autónomo</li>
+                    <li>Estatutos sociales</li>
+                    <li>Pactos de socios</li>
+                    <li>Reestructuraciones</li>
+                  </ul>
+                </div>
+                <button class="btn btn-secondary w-full" onclick="document.getElementById('chatbot-fab').click();" style="margin-top:1rem;">Diseñar →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CÓMO FUNCIONA ── -->
+    <section class="section">
+      <div class="container">
+        <div class="text-center mb-8">
+          <span class="section-label reveal">Proceso simple</span>
+          <h2 class="section-title reveal reveal-delay-1">Tres pasos hacia tu defensa</h2>
+        </div>
+        <div class="steps-line reveal">
+          <div class="step-item">
+            <div class="step-num">01</div>
+            <div class="step-title">Describe tu situación</div>
+            <div class="step-desc">Cuéntanos tu caso en el chat o formulario. Sin tecnicismos, como si hablaras con un amigo.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">02</div>
+            <div class="step-title">El agente analiza</div>
+            <div class="step-desc">La IA selecciona el agente más adecuado y analiza tu situación con la legislación vigente.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">03</div>
+            <div class="step-title">Actúa con confianza</div>
+            <div class="step-desc">Recibe orientación, documentos y plazos. Decide informado si necesitas abogado presencial.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CALCULADORAS ── -->
+    <section id="calculadoras" class="section" style="background:rgba(5,5,8,0.5);">
+      <div class="container">
+        <div class="text-center mb-8">
+          <span class="section-label reveal">Herramientas gratuitas</span>
+          <h2 class="section-title reveal reveal-delay-1">Calculadoras Jurídicas</h2>
+          <p class="section-subtitle reveal reveal-delay-2">
+            Resultados orientativos basados en la legislación española vigente.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Calculadora Despido -->
+          <div class="calculator-card reveal">
+            <div class="calculator-header">
+              <span class="calculator-icon">💼</span>
+              <h3>Calculadora de Despido</h3>
+            </div>
+            <div class="calculator-body">
+              <div class="calc-field">
+                <label for="calc-salario">Salario bruto anual (€)</label>
+                <input id="calc-salario" class="calc-input" type="number" placeholder="Ej: 28000" min="0" step="100">
+              </div>
+              <div class="calc-field">
+                <label for="calc-antiguedad">Años de antigüedad</label>
+                <input id="calc-antiguedad" class="calc-input" type="number" placeholder="Ej: 5" min="0" step="0.5">
+              </div>
+              <div class="calc-field">
+                <label for="calc-tipo-despido">Tipo de despido</label>
+                <select id="calc-tipo-despido" class="calc-select">
+                  <option value="improcedente">Improcedente (33 días/año)</option>
+                  <option value="objetivo">Objetivo/Procedente (20 días/año)</option>
+                  <option value="disciplinario_proc">Disciplinario procedente</option>
+                  <option value="nulo">Nulo (discriminatorio)</option>
+                </select>
+              </div>
+              <button class="btn btn-primary w-full" onclick="calcDespido()">Calcular indemnización</button>
+              <div id="result-despido" class="calc-result">
+                <div class="calc-result-label">Indemnización estimada</div>
+                <div class="calc-result-value">—</div>
+                <div class="calc-result-note"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calculadora Pensión Alimenticia -->
+          <div class="calculator-card reveal reveal-delay-1">
+            <div class="calculator-header">
+              <span class="calculator-icon">👨‍👧</span>
+              <h3>Pensión Alimenticia</h3>
+            </div>
+            <div class="calculator-body">
+              <div class="calc-field">
+                <label for="calc-ingresos-pagador">Ingresos netos pagador (€/mes)</label>
+                <input id="calc-ingresos-pagador" class="calc-input" type="number" placeholder="Ej: 2200" min="0">
+              </div>
+              <div class="calc-field">
+                <label for="calc-ingresos-receptor">Ingresos netos receptor (€/mes)</label>
+                <input id="calc-ingresos-receptor" class="calc-input" type="number" placeholder="Ej: 1400" min="0">
+              </div>
+              <div class="calc-field">
+                <label for="calc-num-hijos">Número de hijos</label>
+                <input id="calc-num-hijos" class="calc-input" type="number" placeholder="Ej: 2" min="1" max="10">
+              </div>
+              <button class="btn btn-primary w-full" onclick="calcAlimentos()">Calcular pensión</button>
+              <div id="result-alimentos" class="calc-result">
+                <div class="calc-result-label">Pensión orientativa</div>
+                <div class="calc-result-value">—</div>
+                <div class="calc-result-note"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calculadora Plazos -->
+          <div class="calculator-card reveal">
+            <div class="calculator-header">
+              <span class="calculator-icon">⏰</span>
+              <h3>Calculadora de Plazos</h3>
+            </div>
+            <div class="calculator-body">
+              <div class="calc-field">
+                <label for="calc-fecha-inicio">Fecha del hecho / notificación</label>
+                <input id="calc-fecha-inicio" class="calc-input" type="date">
+              </div>
+              <div class="calc-field">
+                <label for="calc-tipo-plazo">Tipo de plazo</label>
+                <select id="calc-tipo-plazo" class="calc-select">
+                  <option value="despido_20dias">Recurso despido (20 días hábiles)</option>
+                  <option value="administrativo_1mes">Recurso reposición (1 mes)</option>
+                  <option value="contencioso_2meses">Recurso contencioso (2 meses)</option>
+                  <option value="trafico_1anio">Accidente tráfico (1 año)</option>
+                  <option value="herencia_6meses">Impuesto Sucesiones (6 meses)</option>
+                  <option value="clausula_abusiva">Nulidad cláusula abusiva</option>
+                  <option value="civil_prescripcion">Prescripción civil (5 años)</option>
+                </select>
+              </div>
+              <button class="btn btn-primary w-full" onclick="calcPlazos()">Calcular fecha límite</button>
+              <div id="result-plazos" class="calc-result">
+                <div class="calc-result-label">Fecha límite</div>
+                <div class="calc-result-value">—</div>
+                <div class="calc-result-note"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calculadora Costas -->
+          <div class="calculator-card reveal reveal-delay-1">
+            <div class="calculator-header">
+              <span class="calculator-icon">⚖️</span>
+              <h3>Costas Procesales</h3>
+            </div>
+            <div class="calculator-body">
+              <div class="calc-field">
+                <label for="calc-cuantia">Cuantía del procedimiento (€)</label>
+                <input id="calc-cuantia" class="calc-input" type="number" placeholder="Ej: 15000" min="0">
+              </div>
+              <div class="calc-field">
+                <label for="calc-tipo-juicio">Tipo de procedimiento</label>
+                <select id="calc-tipo-juicio" class="calc-select">
+                  <option value="verbal">Juicio verbal (hasta 6.000 €)</option>
+                  <option value="ordinario">Juicio ordinario</option>
+                  <option value="laboral">Procedimiento laboral</option>
+                  <option value="contencioso">Contencioso-administrativo</option>
+                  <option value="monitorio">Proceso monitorio</option>
+                </select>
+              </div>
+              <button class="btn btn-primary w-full" onclick="calcCostas()">Calcular costas</button>
+              <div id="result-costas" class="calc-result">
+                <div class="calc-result-label">Costas estimadas</div>
+                <div class="calc-result-value">—</div>
+                <div class="calc-result-note"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calculadora Sucesiones -->
+          <div class="calculator-card reveal">
+            <div class="calculator-header">
+              <span class="calculator-icon">🏠</span>
+              <h3>Impuesto de Sucesiones</h3>
+            </div>
+            <div class="calculator-body">
+              <div class="calc-field">
+                <label for="calc-base-sucesiones">Valor de la herencia (€)</label>
+                <input id="calc-base-sucesiones" class="calc-input" type="number" placeholder="Ej: 180000" min="0">
+              </div>
+              <div class="calc-field">
+                <label for="calc-parentesco">Parentesco con el causante</label>
+                <select id="calc-parentesco" class="calc-select">
+                  <option value="conyuge">Cónyuge</option>
+                  <option value="hijo_mayor">Hijo/a mayor de 21 años</option>
+                  <option value="hijo_menor">Hijo/a menor de 21 años</option>
+                  <option value="nieto">Nieto/a</option>
+                  <option value="hermano">Hermano/a</option>
+                  <option value="otro">Otro familiar / Sin parentesco</option>
+                </select>
+              </div>
+              <div class="calc-field">
+                <label for="calc-ccaa">Comunidad Autónoma</label>
+                <select id="calc-ccaa" class="calc-select">
+                  <option value="madrid">Madrid (bonif. 99%)</option>
+                  <option value="andalucia">Andalucía (bonif. 99%)</option>
+                  <option value="cataluna">Cataluña</option>
+                  <option value="otras">Otras CC.AA.</option>
+                </select>
+              </div>
+              <button class="btn btn-primary w-full" onclick="calcSucesiones()">Calcular impuesto</button>
+              <div id="result-sucesiones" class="calc-result">
+                <div class="calc-result-label">Impuesto estimado</div>
+                <div class="calc-result-value">—</div>
+                <div class="calc-result-note"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calculadora Gananciales -->
+          <div class="calculator-card reveal reveal-delay-1">
+            <div class="calculator-header">
+              <span class="calculator-icon">💑</span>
+              <h3>Liquidación de Gananciales</h3>
+            </div>
+            <div class="calculator-body">
+              <div class="calc-field">
+                <label for="calc-bienes-comunes">Bienes gananciales totales (€)</label>
+                <input id="calc-bienes-comunes" class="calc-input" type="number" placeholder="Ej: 250000" min="0">
+              </div>
+              <div class="calc-field">
+                <label for="calc-deudas-comunes">Deudas comunes (€)</label>
+                <input id="calc-deudas-comunes" class="calc-input" type="number" placeholder="Ej: 80000" min="0">
+              </div>
+              <div class="calc-field">
+                <label for="calc-bienes-priv1">Bienes privativos cónyuge 1 (€)</label>
+                <input id="calc-bienes-priv1" class="calc-input" type="number" placeholder="Ej: 30000" min="0">
+              </div>
+              <div class="calc-field">
+                <label for="calc-bienes-priv2">Bienes privativos cónyuge 2 (€)</label>
+                <input id="calc-bienes-priv2" class="calc-input" type="number" placeholder="Ej: 15000" min="0">
+              </div>
+              <button class="btn btn-primary w-full" onclick="calcGananciales()">Calcular reparto</button>
+              <div id="result-gananciales" class="calc-result">
+                <div class="calc-result-label">Mitad ganancial por cónyuge</div>
+                <div class="calc-result-value">—</div>
+                <div class="calc-result-note"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PRECIOS ── -->
+    <section id="precios" class="section">
+      <div class="container">
+        <div class="text-center mb-8">
+          <span class="section-label reveal">Planes y precios</span>
+          <h2 class="section-title reveal reveal-delay-1">Elige tu escudo</h2>
+          <p class="section-subtitle reveal reveal-delay-2">
+            Sin permanencia. Cancela cuando quieras. Garantía de satisfacción 14 días.
+          </p>
+        </div>
+
+        <div class="grid-3" style="align-items:start;">
+          <!-- Plan Básico -->
+          <div class="pricing-card reveal">
+            <div class="pricing-plan">Básico</div>
+            <div class="pricing-name">Escudo Esencial</div>
+            <div class="pricing-desc">Para consultas puntuales y orientación básica</div>
+            <div class="pricing-price">
+              <span class="pricing-currency">€</span>
+              <span class="pricing-amount">29</span>
+              <span class="pricing-period"> /consulta</span>
+            </div>
+            <ul class="pricing-features">
+              <li><span class="feature-check">✓</span> 1 consulta detallada (agente IA)</li>
+              <li><span class="feature-check">✓</span> 1 documento a medida</li>
+              <li><span class="feature-check">✓</span> Acceso calculadoras (ilimitado)</li>
+              <li><span class="feature-check">✓</span> Respuesta en 24h</li>
+              <li><span class="feature-x">✗</span> Consultas ilimitadas</li>
+              <li><span class="feature-x">✗</span> Soporte urgente</li>
+            </ul>
+            <a href="#contacto" class="btn btn-secondary w-full">Empezar</a>
+          </div>
+
+          <!-- Plan Pro (featured) -->
+          <div class="pricing-card featured reveal reveal-delay-1">
+            <div class="pricing-popular">Más popular</div>
+            <div class="pricing-plan">Profesional</div>
+            <div class="pricing-name">Escudo Total</div>
+            <div class="pricing-desc">Para protección legal continua y completa</div>
+            <div class="pricing-price">
+              <span class="pricing-currency">€</span>
+              <span class="pricing-amount">49</span>
+              <span class="pricing-period"> /mes</span>
+            </div>
+            <ul class="pricing-features">
+              <li><span class="feature-check">✓</span> Consultas ilimitadas (todos los agentes)</li>
+              <li><span class="feature-check">✓</span> Documentos ilimitados</li>
+              <li><span class="feature-check">✓</span> Análisis viabilidad MÉTRICA</li>
+              <li><span class="feature-check">✓</span> Alertas de plazos NEXUS</li>
+              <li><span class="feature-check">✓</span> Auditoría RGPD básica</li>
+              <li><span class="feature-check">✓</span> Soporte prioritario</li>
+            </ul>
+            <a href="#contacto" class="btn btn-primary w-full">Activar ahora</a>
+          </div>
+
+          <!-- Plan Empresa -->
+          <div class="pricing-card reveal reveal-delay-2">
+            <div class="pricing-plan">Empresa</div>
+            <div class="pricing-name">Pack Empresarial</div>
+            <div class="pricing-desc">Para pymes, despachos y equipos directivos</div>
+            <div class="pricing-price">
+              <span class="pricing-currency">€</span>
+              <span class="pricing-amount">199</span>
+              <span class="pricing-period"> /mes</span>
+            </div>
+            <ul class="pricing-features">
+              <li><span class="feature-check">✓</span> Todo lo de Escudo Total</li>
+              <li><span class="feature-check">✓</span> Hasta 10 usuarios</li>
+              <li><span class="feature-check">✓</span> Auditoría RGPD completa</li>
+              <li><span class="feature-check">✓</span> CONSTRUCTOR societario</li>
+              <li><span class="feature-check">✓</span> Account manager dedicado</li>
+              <li><span class="feature-check">✓</span> API access para integración</li>
+            </ul>
+            <a href="#contacto" class="btn btn-secondary w-full">Contactar</a>
+          </div>
+        </div>
+
+        <!-- Garantía -->
+        <div style="text-align:center;margin-top:3rem;" class="reveal">
+          <div class="badge badge-green" style="margin-bottom:1rem;">✓ Garantía de satisfacción</div>
+          <p style="font-size:0.875rem;color:var(--text-300);">14 días de prueba sin riesgo. Si no quedas satisfecho, te devolvemos el importe íntegro.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TESTIMONIOS ── -->
+    <section id="testimonios" class="section" style="background:rgba(5,5,8,0.5);">
+      <div class="container">
+        <div class="text-center mb-8">
+          <span class="section-label reveal">Clientes reales</span>
+          <h2 class="section-title reveal reveal-delay-1">Lo que dicen nuestros clientes</h2>
+        </div>
+
+        <div class="grid-3">
+          <div class="testimonial-card reveal">
+            <p class="testimonial-text">"Me despidieron sin carta. ARPA me explicó que tenía 20 días para actuar y LEX redactó el burofax de reclamación esa misma noche. Al final cobré la indemnización completa."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">MR</div>
+              <div>
+                <div class="testimonial-name">María R.</div>
+                <div class="testimonial-role">Técnica de laboratorio, Barcelona</div>
+                <div class="testimonial-stars">★★★★★</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal reveal-delay-1">
+            <p class="testimonial-text">"Tenía una multa de tráfico de 800€ y no sabía si recurrir valía la pena. MÉTRICA me dijo 68% de éxito por vicio formal. Recurrí, la anularon. 800€ ahorrados."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">JL</div>
+              <div>
+                <div class="testimonial-name">Javier L.</div>
+                <div class="testimonial-role">Comercial, Madrid</div>
+                <div class="testimonial-stars">★★★★★</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal reveal-delay-2">
+            <p class="testimonial-text">"Mi empresa necesitaba adaptarse al RGPD. CUSTODIA hizo una auditoría completa y nos generó toda la documentación. Lo que un despacho pedía 3.000€, aquí fue 199€/mes."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">AP</div>
+              <div>
+                <div class="testimonial-name">Ana P.</div>
+                <div class="testimonial-role">Directora RRHH, Sevilla</div>
+                <div class="testimonial-stars">★★★★★</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal">
+            <p class="testimonial-text">"Heredé una casa y no sabía cuánto impuesto pagar. La calculadora de sucesiones me dio 1.240€ estimados. El gestor me cobró 1.180€. La precisión es brutal."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">CF</div>
+              <div>
+                <div class="testimonial-name">Carlos F.</div>
+                <div class="testimonial-role">Funcionario, Valencia</div>
+                <div class="testimonial-stars">★★★★★</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal reveal-delay-1">
+            <p class="testimonial-text">"SCRIPTOR me generó el contrato de arrendamiento para mi piso en 15 minutos. Tiene todas las cláusulas actualizadas con la LAU. Mi casero de siempre usaba uno de 2010."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">LM</div>
+              <div>
+                <div class="testimonial-name">Laura M.</div>
+                <div class="testimonial-role">Propietaria, Málaga</div>
+                <div class="testimonial-stars">★★★★★</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal reveal-delay-2">
+            <p class="testimonial-text">"Divorce de mutuo acuerdo. CONSTRUCTOR nos asesoró sobre cómo repartir el negocio familiar, LEX explicó el convenio regulador y SCRIPTOR lo redactó. Ahorramos 4.000€ en honorarios."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">RM</div>
+              <div>
+                <div class="testimonial-name">Roberto M.</div>
+                <div class="testimonial-role">Empresario, Bilbao</div>
+                <div class="testimonial-stars">★★★★★</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section id="faq" class="section">
+      <div class="container" style="max-width:800px;">
+        <div class="text-center mb-8">
+          <span class="section-label reveal">Preguntas frecuentes</span>
+          <h2 class="section-title reveal reveal-delay-1">Todo lo que necesitas saber</h2>
+        </div>
+
+        <div class="reveal">
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">¿Imperio Legal SLP es un despacho de abogados?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">No. Imperio Legal SLP es una plataforma de consultoría e información jurídica online. No ejercemos la abogacía ni actuamos como representantes procesales. Nuestros servicios son de carácter informativo y orientativo. Para actuaciones procesales o firmado de contratos, le recomendamos contratar un abogado colegiado.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">¿Qué diferencia hay entre consultoría jurídica y abogacía?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">La abogacía implica representación procesal, firma de escritos ante juzgados y defensa ante tribunales — requiere colegiación (Ley 2/2007 y RD 135/2021). La consultoría jurídica consiste en orientar, informar y redactar documentos sin actuar como representante procesal. Es completamente legal y está regulada. Nuestra actividad se enmarca en esta segunda categoría.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">¿Los documentos que genera SCRIPTOR tienen validez legal?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Los documentos generados por SCRIPTOR son borradores jurídicamente coherentes con la legislación española vigente. Para que tengan plena eficacia legal, deben ser firmados por las partes y, en algunos casos (contratos de arrendamiento, poderes, testamentos), otorgados ante notario. Le recomendamos siempre revisarlos con un abogado antes de firmar documentos de relevancia económica o jurídica.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">¿Mis datos están protegidos según el RGPD?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Sí. Cumplimos íntegramente con el RGPD (Reglamento UE 2016/679) y la LOPDGDD. Sus datos se tratan con base en el contrato de servicios (Art. 6.1.b RGPD), se almacenan cifrados, no se ceden a terceros sin consentimiento y puede ejercer sus derechos ARSLOP contactando a <a href="mailto:rgpd@imperiolegal.es" style="color:var(--gold-500)">rgpd@imperiolegal.es</a>.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">¿Las calculadoras son 100% fiables?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Las calculadoras ofrecen estimaciones orientativas basadas en la legislación española vigente y fórmulas estándar. Los resultados reales pueden variar según convenio colectivo aplicable, jurisprudencia reciente, circunstancias personales y criterio judicial. No deben usarse como sustituto de un cálculo profesional para decisiones económicas importantes.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">¿Puedo cancelar la suscripción en cualquier momento?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Sí. No hay permanencia mínima. Puede cancelar su suscripción en cualquier momento desde su área de cliente, sin penalizaciones, con efectos al final del período facturado. Además, ofrecemos garantía de satisfacción de 14 días: si no está satisfecho, devolvemos el importe íntegro.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">¿Qué idiomas están disponibles?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Actualmente la plataforma opera en español (castellano) y está especializada en derecho español. Próximamente añadiremos catalán, euskera y gallego, así como derecho de la UE en inglés para operaciones transfronterizas.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONTACTO ── -->
+    <section id="contacto" class="section" style="background:rgba(5,5,8,0.5);">
+      <div class="container" style="max-width:700px;">
+        <div class="text-center mb-8">
+          <span class="section-label reveal">Consulta gratuita</span>
+          <h2 class="section-title reveal reveal-delay-1">Cuéntanos tu caso</h2>
+          <p class="section-subtitle reveal reveal-delay-2">
+            Sin compromiso. Respuesta en menos de 24 horas por un especialista.
+          </p>
+        </div>
+
+        <form id="contact-form" class="card reveal" novalidate>
+          <div class="grid-2">
+            <div class="form-field">
+              <label class="form-label" for="nombre">Nombre</label>
+              <input id="nombre" name="nombre" class="form-input" type="text" placeholder="Tu nombre" required autocomplete="given-name">
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="email">Email</label>
+              <input id="email" name="email" class="form-input" type="email" placeholder="tu@email.com" required autocomplete="email">
+            </div>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="telefono">Teléfono (opcional)</label>
+            <input id="telefono" name="telefono" class="form-input" type="tel" placeholder="+34 600 000 000" autocomplete="tel">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="area">Área del derecho</label>
+            <select id="area" name="area" class="form-select">
+              <option value="">Selecciona el área</option>
+              <option>Derecho laboral</option>
+              <option>Derecho civil / familia</option>
+              <option>Derecho penal</option>
+              <option>Derecho administrativo</option>
+              <option>Protección de datos</option>
+              <option>Derecho mercantil / empresa</option>
+              <option>Derecho del consumidor</option>
+              <option>Sucesiones / herencias</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="consulta">Describe tu situación</label>
+            <textarea id="consulta" name="consulta" class="form-textarea" placeholder="Cuéntanos brevemente qué ha ocurrido, qué necesitas y cualquier fecha o dato relevante..." required></textarea>
+          </div>
+          <div class="form-field">
+            <div class="form-checkbox">
+              <input id="rgpd" name="rgpd" type="checkbox" required>
+              <label for="rgpd" class="form-rgpd">
+                He leído y acepto la <a href="legal/privacidad.html">Política de Privacidad</a>. Consiento el tratamiento de mis datos para responder a esta consulta conforme al RGPD (Art. 6.1.a y 6.1.b). Puedo revocar este consentimiento en cualquier momento.
+              </label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary w-full" style="justify-content:center;font-size:1rem;padding:16px;">
+            Enviar consulta gratuita →
+          </button>
+          <div id="form-success" style="display:none;text-align:center;padding:1rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:var(--radius-md);color:#4ade80;font-size:0.875rem;">
+            ✓ Consulta enviada. Te responderemos en menos de 24 horas.
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── CTA FINAL ── -->
+    <section class="section" style="text-align:center;background:linear-gradient(135deg, rgba(212,175,55,0.06), rgba(5,5,8,0) 70%);">
+      <div class="container reveal">
+        <div class="judicial-seal">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="48" stroke="#D4AF37" stroke-width="2" fill="none"/>
+            <circle cx="50" cy="50" r="40" stroke="#D4AF37" stroke-width="1" stroke-dasharray="4 3" fill="none"/>
+            <circle cx="50" cy="50" r="32" stroke="#D4AF37" stroke-width="1" fill="rgba(212,175,55,0.05)"/>
+            <text x="50" y="46" text-anchor="middle" font-size="9" fill="#D4AF37" font-family="serif" letter-spacing="2">IMPERIO</text>
+            <text x="50" y="58" text-anchor="middle" font-size="9" fill="#D4AF37" font-family="serif" letter-spacing="2">LEGAL</text>
+            <text x="50" y="70" text-anchor="middle" font-size="7" fill="#B8962A" font-family="serif" letter-spacing="1">S.L.P.</text>
+          </svg>
+        </div>
+        <h2 class="section-title" style="font-size:clamp(2rem,5vw,4rem);">Tu defensa empieza<br><span style="background:linear-gradient(135deg,#f5c842,#b8962a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ahora mismo.</span></h2>
+        <p style="color:var(--text-300);font-size:1.1rem;max-width:520px;margin:1.5rem auto 2.5rem;line-height:1.7;">
+          No esperes a necesitar un abogado para conocer tus derechos. Con Imperio Legal, siempre estarás un paso por delante.
+        </p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="#contacto" class="btn btn-primary" style="font-size:1rem;padding:18px 40px;">Empezar gratis →</a>
+          <a href="#precios" class="btn btn-ghost">Ver planes</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#inicio" class="nav-logo" style="margin-bottom:1rem;display:inline-flex;">
+            <svg width="36" height="36" viewBox="0 0 42 42" fill="none"><circle cx="21" cy="21" r="20" stroke="#D4AF37" stroke-width="1.5" fill="none"/><line x1="21" y1="10" x2="21" y2="32" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="16" x2="30" y2="16" stroke="#D4AF37" stroke-width="1.2" stroke-linecap="round"/><circle cx="12" cy="22" r="4" stroke="#D4AF37" stroke-width="1" fill="rgba(212,175,55,0.1)"/><circle cx="30" cy="22" r="4" stroke="#D4AF37" stroke-width="1" fill="rgba(212,175,55,0.1)"/></svg>
+            <div class="nav-logo-text" style="margin-left:10px;"><strong>Imperio Legal SLP</strong><span>Tu escudo legal. Siempre encendido.</span></div>
+          </a>
+          <p class="footer-brand-desc">Plataforma de consultoría jurídica online con inteligencia artificial. Orientación legal 24/7 en España. No ejercemos la abogacía.</p>
+          <p class="footer-legal-text">
+            Imperio Legal SLP · CIF: B-XXXXXXXX · Inscrita en el Registro Mercantil<br>
+            Calle Gran Vía, 28, 28013 Madrid, España<br>
+            <a href="mailto:info@imperiolegal.es" style="color:var(--gold-500)">info@imperiolegal.es</a>
+          </p>
+        </div>
+        <div>
+          <div class="footer-col-title">Servicios</div>
+          <ul class="footer-links">
+            <li><a href="#agentes">Agentes IA</a></li>
+            <li><a href="#calculadoras">Calculadoras</a></li>
+            <li><a href="#precios">Planes</a></li>
+            <li><a href="productos/documentos.html">Documentos</a></li>
+            <li><a href="productos/cursos.html">Formación</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Áreas legales</div>
+          <ul class="footer-links">
+            <li><a href="#servicios">Derecho laboral</a></li>
+            <li><a href="#servicios">Familia y divorcio</a></li>
+            <li><a href="#servicios">Sucesiones</a></li>
+            <li><a href="#servicios">Protección de datos</a></li>
+            <li><a href="#servicios">Derecho mercantil</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Legal</div>
+          <ul class="footer-links">
+            <li><a href="legal/aviso-legal.html">Aviso Legal</a></li>
+            <li><a href="legal/privacidad.html">Política de Privacidad</a></li>
+            <li><a href="legal/cookies.html">Política de Cookies</a></li>
+            <li><a href="legal/terminos.html">Términos de Servicio</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 Imperio Legal SLP. Todos los derechos reservados.</p>
+        <div class="footer-compliance">
+          <span>RGPD ✓</span>
+          <span>LSSI-CE ✓</span>
+          <span>LOPDGDD ✓</span>
+          <span>AEPD 2024 ✓</span>
+          <span>RD 135/2021 ✓</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── COOKIE BANNER (AEPD 2024 — 3 botones igual prominencia) ── -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Preferencias de cookies" aria-modal="true">
+    <p class="cookie-text">
+      Utilizamos cookies propias y de terceros para mejorar nuestros servicios y analizar el uso de la web.
+      Puede aceptar todas, rechazarlas o configurar sus preferencias. Más información en nuestra
+      <a href="legal/cookies.html">Política de Cookies</a> (AEPD 2024).
+    </p>
+    <div class="cookie-actions">
+      <button class="cookie-btn" data-choice="rejected" aria-label="Rechazar cookies no esenciales">Rechazar</button>
+      <button class="cookie-btn" data-choice="configured" aria-label="Configurar preferencias de cookies">Configurar</button>
+      <button class="cookie-btn" data-choice="accepted" aria-label="Aceptar todas las cookies">Aceptar todo</button>
+    </div>
+  </div>
+
+  <!-- ── CHATBOT LEX ── -->
+  <button id="chatbot-fab" class="chatbot-fab" aria-label="Abrir consulta con LEX (agente IA)">⚖️</button>
+
+  <div id="chatbot-window" class="chatbot-window" role="dialog" aria-label="Chat con LEX" aria-modal="true">
+    <div class="chatbot-header">
+      <div class="chatbot-header-info">
+        <div class="chatbot-avatar">⚖️</div>
+        <div>
+          <strong style="font-size:0.9rem;">LEX · Asesor IA</strong>
+          <div class="chatbot-status">Disponible</div>
+        </div>
+      </div>
+      <button id="chatbot-close" class="chatbot-close" aria-label="Cerrar chat">✕</button>
+    </div>
+    <div id="chatbot-messages" class="chatbot-messages">
+      <div class="msg msg-bot">¡Hola! Soy LEX, tu asesor legal IA. Puedo orientarte sobre derecho laboral, civil, familiar, administrativo, RGPD y más. ¿En qué puedo ayudarte hoy?</div>
+      <div class="msg msg-bot" style="font-size:0.72rem;opacity:0.55;">⚠️ Orientación informativa. No constituye asesoramiento jurídico profesional.</div>
+    </div>
+    <div class="chatbot-quick-replies">
+      <button class="quick-reply-btn">Me han despedido</button>
+      <button class="quick-reply-btn">Quiero recurrir una multa</button>
+      <button class="quick-reply-btn">Necesito un contrato</button>
+      <button class="quick-reply-btn">Brecha de datos</button>
+    </div>
+    <div class="chatbot-input-area">
+      <input id="chatbot-input" class="chatbot-input" type="text" placeholder="Escribe tu consulta..." autocomplete="off" aria-label="Mensaje a LEX">
+      <button id="chatbot-send" class="chatbot-send" aria-label="Enviar mensaje">→</button>
+    </div>
+  </div>
+
+  <!-- ── WHATSAPP ── -->
+  <a href="https://wa.me/34600000000?text=Hola%2C%20necesito%20orientaci%C3%B3n%20legal%20sobre%20mi%20caso." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <!-- Scripts -->
+  <script src="js/agents.js"></script>
+  <script src="js/calculators.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

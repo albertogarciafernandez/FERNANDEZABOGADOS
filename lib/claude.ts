@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 
 export const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY ?? 'sk-placeholder',
 });
 
 export const LEGAL_SYSTEM_PROMPT = `Eres un abogado experto español con más de 20 años de experiencia en derecho de consumidores, tráfico, contratos y reclamaciones civiles. Tu especialidad es analizar documentos legales y determinar la viabilidad de recursos y reclamaciones.
